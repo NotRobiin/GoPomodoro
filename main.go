@@ -24,8 +24,9 @@ func main() {
 
 	ui := new(UI)
 	ui.app = app.New()
+	ui.timer = timer
 	ui.window = ui.app.NewWindow(WINDOW_TITLE)
-	ui.window.SetContent(ui.create_content(timer))
+	ui.window.SetContent(ui.create_content())
 	ui.window.Resize(fyne.NewSize(WINDOW_WIDTH, WINDOW_HEIGHT))
 	ui.window.SetMaster()
 	ui.window.CenterOnScreen()
