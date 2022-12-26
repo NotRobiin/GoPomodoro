@@ -27,8 +27,8 @@ func (ui *UI) create_content() *fyne.Container {
 }
 
 func (ui *UI) create_buttons() *fyne.Container {
-	pr, _ := fyne.LoadResourceFromPath("play-pause.png")
-	s, _ := fyne.LoadResourceFromPath("stop.png")
+	pr, _ := fyne.LoadResourceFromPath("resources/play-pause.png")
+	s, _ := fyne.LoadResourceFromPath("resources/stop.png")
 
 	return container.New(layout.NewGridLayout(2),
 		widget.NewButtonWithIcon("", pr, func() { ui.timer.toggle() }),
