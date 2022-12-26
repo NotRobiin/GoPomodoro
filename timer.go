@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"time"
+
+	"fyne.io/fyne/v2/data/binding"
 )
 
 type Timer struct {
@@ -37,7 +39,7 @@ func (t *Timer) start() {
 
 				t.tl--
 
-				if t.tl <= 0 {
+				if t.tl < 0 {
 					t.finished = true
 					t.on_finish(t)
 					t.stop()
@@ -66,6 +68,9 @@ func (t *Timer) set(tm time.Duration) {
 	t.tl = int(tm.Seconds())
 }
 
-func (t *Timer) show() {
-	fmt.Printf("Time left: %d\n", t.tl)
+func (t *Timer) show(bind binding.String) {
+	minutes := int(t.tl/60) % 60
+	seconds := int(t.tl % 60)
+
+	bind.Set(fmt.Sprintf("%02d:%02d", minutes, seconds))
 }
