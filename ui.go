@@ -12,8 +12,6 @@ type UI struct {
 	app    fyne.App
 	window fyne.Window
 	timer  *Timer
-
-	timer_text binding.String
 }
 
 func (ui *UI) create_content() *fyne.Container {
@@ -40,9 +38,9 @@ func (ui *UI) create_buttons() *fyne.Container {
 
 func (ui *UI) create_timer_label() *fyne.Container {
 	timer_label := widget.NewLabel("")
-	ui.timer_text = binding.NewString()
-	timer_label.Bind(ui.timer_text)
-	ui.timer.show(ui.timer_text)
+	timer_text = binding.NewString()
+	timer_label.Bind(timer_text)
+	ui.timer.show(timer_text)
 
 	return container.New(layout.NewCenterLayout(),
 		timer_label,
