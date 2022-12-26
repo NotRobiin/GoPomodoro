@@ -3,15 +3,12 @@ package main
 import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
-	"fyne.io/fyne/v2/data/binding"
 )
 
-var (
-	timer_text binding.String
-)
+var ui UI
 
 func on_tick(timer *Timer) {
-	timer.show(timer_text)
+	timer.show(ui.timer_text)
 }
 
 func on_finish(timer *Timer) {
