@@ -19,8 +19,11 @@ func (ui *UI) create_content() *fyne.Container {
 	separator := widget.NewSeparator()
 	buttons := ui.create_buttons()
 
-	content := container.New(layout.NewVBoxLayout(), timer, separator, buttons)
-	return content
+	return container.New(layout.NewVBoxLayout(),
+		timer,
+		separator,
+		buttons,
+	)
 }
 
 func (ui *UI) create_buttons() *fyne.Container {
