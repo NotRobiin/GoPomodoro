@@ -20,27 +20,26 @@ func on_tick(timer *Timer) {
 func on_finish(timer *Timer) {
 }
 
-func create_timer_label() *widget.Label {
+func create_content(timer *Timer) *fyne.Container {
 	timer_label := widget.NewLabel("")
 	timer_text = binding.NewString()
 	timer_label.Bind(timer_text)
-
-	return timer_label
-}
-
-func create_content(timer *Timer) *fyne.Container {
-	timer_label := create_timer_label()
 	timer.show(timer_text)
 
+	timer_container := container.New(layout.NewCenterLayout(),
+		timer_label,
+	)
 	separator := widget.NewSeparator()
 
-	buttons := container.New(layout.NewGridLayout(3),
-		widget.NewButton("Pause", func() { timer.pause() }),
-		widget.NewButton("Resume", func() { timer.resume() }),
-		widget.NewButton("Stop", func() { timer.stop() }),
+	pr, _ := fyne.LoadResourceFromPath("play-pause.png")
+	s, _ := fyne.LoadResourceFromPath("stop.png")
+
+	buttons := container.New(layout.NewGridLayout(2),
+		widget.NewButtonWithIcon("", pr, func() { timer.toggle() }),
+		widget.NewButtonWithIcon("", s, func() { timer.stop() }),
 	)
 
-	content := container.New(layout.NewVBoxLayout(), timer_label, separator, buttons)
+	content := container.New(layout.NewVBoxLayout(), timer_container, separator, buttons)
 	return content
 }
 

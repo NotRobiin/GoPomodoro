@@ -3,7 +3,7 @@ package main
 import "time"
 
 const (
-	TEST_TIMER = (7 * time.Second)
+	TEST_TIMER = (25 * time.Minute)
 
 	WINDOW_TITLE  = "Pomodoro"
 	WINDOW_WIDTH  = 300
