@@ -3,7 +3,9 @@ package main
 import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
+	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/data/binding"
+	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
 )
 
@@ -11,11 +13,35 @@ var (
 	timer_text binding.String
 )
 
-func on_tick(t *Timer) {
-	t.show(timer_text)
+func on_tick(timer *Timer) {
+	timer.show(timer_text)
 }
 
-func on_finish(t *Timer) {
+func on_finish(timer *Timer) {
+}
+
+func create_timer_label() *widget.Label {
+	timer_label := widget.NewLabel("")
+	timer_text = binding.NewString()
+	timer_label.Bind(timer_text)
+
+	return timer_label
+}
+
+func create_content(timer *Timer) *fyne.Container {
+	timer_label := create_timer_label()
+	timer.show(timer_text)
+
+	separator := widget.NewSeparator()
+
+	buttons := container.New(layout.NewGridLayout(3),
+		widget.NewButton("Pause", func() { timer.pause() }),
+		widget.NewButton("Resume", func() { timer.resume() }),
+		widget.NewButton("Stop", func() { timer.stop() }),
+	)
+
+	content := container.New(layout.NewVBoxLayout(), timer_label, separator, buttons)
+	return content
 }
 
 func main() {
@@ -23,16 +49,11 @@ func main() {
 	timer.set(TEST_TIMER)
 	timer.start()
 
-	timer_label := widget.NewLabel("")
-	timer_text = binding.NewString()
-	timer_label.Bind(timer_text)
-	timer.show(timer_text)
-
-	myApp := app.New()
-	myWindow := myApp.NewWindow(WINDOW_TITLE)
-	myWindow.SetContent(timer_label)
-	myWindow.Resize(fyne.NewSize(WINDOW_WIDTH, WINDOW_HEIGHT))
-	myWindow.SetMaster()
-	myWindow.CenterOnScreen()
-	myWindow.ShowAndRun()
+	gui := app.New()
+	window := gui.NewWindow(WINDOW_TITLE)
+	window.SetContent(create_content(timer))
+	window.Resize(fyne.NewSize(WINDOW_WIDTH, WINDOW_HEIGHT))
+	window.SetMaster()
+	window.CenterOnScreen()
+	window.ShowAndRun()
 }

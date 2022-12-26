@@ -64,6 +64,10 @@ func (t *Timer) resume() {
 	t.paused = false
 }
 
+func (t *Timer) toggle() {
+	t.paused = !t.paused
+}
+
 func (t *Timer) set(tm time.Duration) {
 	t.tl = int(tm.Seconds())
 }
