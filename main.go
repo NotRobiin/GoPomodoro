@@ -30,5 +30,7 @@ func main() {
 	ui.window.Resize(fyne.NewSize(WINDOW_WIDTH, WINDOW_HEIGHT))
 	ui.window.SetMaster()
 	ui.window.CenterOnScreen()
+	ui.window.RequestFocus()
+	ui.window.SetFixedSize(true)
 	ui.window.ShowAndRun()
 }
