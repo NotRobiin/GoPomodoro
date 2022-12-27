@@ -1,9 +1,10 @@
 package main
 
 import (
+	"time"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/data/binding"
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
 )
@@ -15,18 +16,18 @@ type UI struct {
 }
 
 func (ui *UI) create_content() *fyne.Container {
-	timer := ui.create_timer_label()
-	separator := widget.NewSeparator()
-	buttons := ui.create_buttons()
+	timer := ui.timer.get_widget()
+	media_buttons := ui.create_media_buttons()
+	time_buttons := ui.create_time_buttons()
 
 	return container.New(layout.NewVBoxLayout(),
 		timer,
-		separator,
-		buttons,
+		media_buttons,
+		time_buttons,
 	)
 }
 
-func (ui *UI) create_buttons() *fyne.Container {
+func (ui *UI) create_media_buttons() *fyne.Container {
 	pr, _ := fyne.LoadResourceFromPath("resources/play-pause.png")
 	s, _ := fyne.LoadResourceFromPath("resources/stop.png")
 
@@ -36,13 +37,10 @@ func (ui *UI) create_buttons() *fyne.Container {
 	)
 }
 
-func (ui *UI) create_timer_label() *fyne.Container {
-	timer_label := widget.NewLabel("")
-	timer_text = binding.NewString()
-	timer_label.Bind(timer_text)
-	ui.timer.show(timer_text)
-
-	return container.New(layout.NewCenterLayout(),
-		timer_label,
+func (ui *UI) create_time_buttons() *fyne.Container {
+	return container.New(layout.NewGridLayout(3),
+		widget.NewButton("25:00", func() { ui.timer.set(25 * time.Minute) }),
+		widget.NewButton("15:00", func() { ui.timer.set(15 * time.Minute) }),
+		widget.NewButton("10:00", func() { ui.timer.set(10 * time.Minute) }),
 	)
 }

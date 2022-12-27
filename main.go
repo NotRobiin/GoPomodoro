@@ -3,27 +3,27 @@ package main
 import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
-	"fyne.io/fyne/v2/data/binding"
 )
 
 var (
-	timer_text binding.String
+	ui *UI
 )
 
 func on_tick(timer *Timer) {
-	timer.show(timer_text)
+	timer.show(ui)
 }
 
 func on_finish(timer *Timer) {
 }
 
 func main() {
+	ui = new(UI)
+	ui.app = app.New()
+
 	timer := create_timer(on_tick, on_finish)
-	timer.set(TEST_TIMER)
+	timer.set(TIMER_DEFAULT_TIME)
 	timer.start()
 
-	ui := new(UI)
-	ui.app = app.New()
 	ui.timer = timer
 	ui.window = ui.app.NewWindow(WINDOW_TITLE)
 	ui.window.SetContent(ui.create_content())
