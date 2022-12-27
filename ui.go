@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
@@ -44,8 +45,11 @@ func (ui *UI) createTimeButtons() *fyne.Container {
 		s := int(v.Seconds())
 		minutes := int(s/60) % 60
 		seconds := int(s % 60)
+		f := func(v time.Duration) func() {
+			return func() { ui.timer.set(v) }
+		}
 
-		buttons[i] = widget.NewButton(fmt.Sprintf("%02d:%02d", minutes, seconds), func() { ui.timer.set(v) })
+		buttons[i] = widget.NewButton(fmt.Sprintf("%02d:%02d", minutes, seconds), f(v))
 	}
 
 	return container.New(layout.NewGridLayout(len(TimerDefaultTimes)),
