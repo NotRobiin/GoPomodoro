@@ -1,7 +1,7 @@
 package main
 
 import (
-	"time"
+	"fmt"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
@@ -38,9 +38,17 @@ func (ui *UI) create_media_buttons() *fyne.Container {
 }
 
 func (ui *UI) create_time_buttons() *fyne.Container {
-	return container.New(layout.NewGridLayout(3),
-		widget.NewButton("25:00", func() { ui.timer.set(25 * time.Minute) }),
-		widget.NewButton("15:00", func() { ui.timer.set(15 * time.Minute) }),
-		widget.NewButton("10:00", func() { ui.timer.set(10 * time.Minute) }),
+	var buttons = make([]fyne.CanvasObject, len(TIMER_DEFAULT_TIMES))
+
+	for i, v := range TIMER_DEFAULT_TIMES {
+		s := int(v.Seconds())
+		minutes := int(s/60) % 60
+		seconds := int(s % 60)
+
+		buttons[i] = widget.NewButton(fmt.Sprintf("%02d:%02d", minutes, seconds), func() { ui.timer.set(v) })
+	}
+
+	return container.New(layout.NewGridLayout(len(TIMER_DEFAULT_TIMES)),
+		buttons...,
 	)
 }
