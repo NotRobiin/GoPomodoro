@@ -17,15 +17,13 @@ type Timer struct {
 }
 
 func create_timer(on_tick func(*Timer), on_finish func(*Timer)) *Timer {
-	t := new(Timer)
-
-	t.ticker = time.NewTicker(1 * time.Second)
-	t.on_tick = on_tick
-	t.on_finish = on_finish
-	t.paused = false
-	t.finished = false
-
-	return t
+	return &Timer{
+		ticker:    time.NewTicker(1 * time.Second),
+		on_tick:   on_tick,
+		on_finish: on_finish,
+		paused:    false,
+		finished:  false,
+	}
 }
 
 func (t *Timer) start() {
