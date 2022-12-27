@@ -77,6 +77,10 @@ func (t *Timer) toggle() {
 
 func (t *Timer) set(tm time.Duration) {
 	t.tl = int(tm.Seconds())
+
+	minutes := int(t.tl/60) % 60
+	seconds := int(t.tl % 60)
+	t.text.Text = fmt.Sprintf("%02d:%02d", minutes, seconds)
 	t.text.Refresh()
 }
 
