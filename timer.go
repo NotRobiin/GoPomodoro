@@ -77,6 +77,7 @@ func (t *Timer) toggle() {
 
 func (t *Timer) set(tm time.Duration) {
 	t.tl = int(tm.Seconds())
+	t.text.Refresh()
 }
 
 func (t *Timer) get_widget() *fyne.Container {
