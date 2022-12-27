@@ -4,17 +4,17 @@ import "time"
 
 const (
 	// Window
-	WINDOW_TITLE  = "Pomodoro"
-	WINDOW_WIDTH  = 300
-	WINDOW_HEIGHT = 300
+	WindowTitle  = "Pomodoro"
+	WindowWidth  = 300
+	WindowHeight = 300
 
 	// Timer
-	TIMER_DEFAULT_TIME = (25 * time.Minute)
-	TIMER_TEXT_SIZE    = 75.0
+	TimerDefaultTime = (25 * time.Minute)
+	TimerTextSize    = 75.0
 )
 
 var (
-	TIMER_DEFAULT_TIMES = [...]time.Duration{
+	TimerDefaultTimes = [...]time.Duration{
 		25 * time.Minute,
 		15 * time.Minute,
 		10 * time.Minute,

@@ -15,19 +15,19 @@ type UI struct {
 	timer  *Timer
 }
 
-func (ui *UI) create_content() *fyne.Container {
-	timer := ui.timer.get_widget()
-	media_buttons := ui.create_media_buttons()
-	time_buttons := ui.create_time_buttons()
+func (ui *UI) createContent() *fyne.Container {
+	timer := ui.timer.getWidget()
+	mediaButtons := ui.createMediaButtons()
+	timeButtons := ui.createTimeButtons()
 
 	return container.New(layout.NewVBoxLayout(),
 		timer,
-		media_buttons,
-		time_buttons,
+		mediaButtons,
+		timeButtons,
 	)
 }
 
-func (ui *UI) create_media_buttons() *fyne.Container {
+func (ui *UI) createMediaButtons() *fyne.Container {
 	pr, _ := fyne.LoadResourceFromPath("resources/play-pause.png")
 	s, _ := fyne.LoadResourceFromPath("resources/stop.png")
 
@@ -37,10 +37,10 @@ func (ui *UI) create_media_buttons() *fyne.Container {
 	)
 }
 
-func (ui *UI) create_time_buttons() *fyne.Container {
-	var buttons = make([]fyne.CanvasObject, len(TIMER_DEFAULT_TIMES))
+func (ui *UI) createTimeButtons() *fyne.Container {
+	var buttons = make([]fyne.CanvasObject, len(TimerDefaultTimes))
 
-	for i, v := range TIMER_DEFAULT_TIMES {
+	for i, v := range TimerDefaultTimes {
 		s := int(v.Seconds())
 		minutes := int(s/60) % 60
 		seconds := int(s % 60)
@@ -48,7 +48,7 @@ func (ui *UI) create_time_buttons() *fyne.Container {
 		buttons[i] = widget.NewButton(fmt.Sprintf("%02d:%02d", minutes, seconds), func() { ui.timer.set(v) })
 	}
 
-	return container.New(layout.NewGridLayout(len(TIMER_DEFAULT_TIMES)),
+	return container.New(layout.NewGridLayout(len(TimerDefaultTimes)),
 		buttons...,
 	)
 }

@@ -12,25 +12,25 @@ import (
 )
 
 type Timer struct {
-	ticker    *time.Ticker
-	on_tick   func(*Timer)
-	on_finish func(*Timer)
-	paused    bool
-	finished  bool
-	tl        int
-	text      *canvas.Text
+	ticker   *time.Ticker
+	onTick   func(*Timer)
+	onFinish func(*Timer)
+	paused   bool
+	finished bool
+	tl       int
+	text     *canvas.Text
 }
 
-func create_timer(on_tick func(*Timer), on_finish func(*Timer)) *Timer {
+func create_timer(onTick func(*Timer), onFinish func(*Timer)) *Timer {
 	t := new(Timer)
 
 	t.ticker = time.NewTicker(1 * time.Second)
-	t.on_tick = on_tick
-	t.on_finish = on_finish
+	t.onTick = onTick
+	t.onFinish = onFinish
 	t.paused = false
 	t.finished = false
 	t.text = canvas.NewText("", color.White)
-	t.text.TextSize = TIMER_TEXT_SIZE
+	t.text.TextSize = TimerTextSize
 
 	return t
 }
@@ -48,12 +48,12 @@ func (t *Timer) start() {
 
 				if t.tl < 0 {
 					t.finished = true
-					t.on_finish(t)
+					t.onFinish(t)
 					t.stop()
 					return
 				}
 
-				t.on_tick(t)
+				t.onTick(t)
 			}
 		}
 	}()
@@ -80,7 +80,7 @@ func (t *Timer) set(tm time.Duration) {
 	t.text.Refresh()
 }
 
-func (t *Timer) get_widget() *fyne.Container {
+func (t *Timer) getWidget() *fyne.Container {
 	return container.New(layout.NewCenterLayout(),
 		t.text,
 	)
