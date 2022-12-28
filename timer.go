@@ -76,7 +76,7 @@ func (t *Timer) toggle() {
 }
 
 func (t *Timer) set(tm time.Duration) {
-	t.text.Text = t.format_time(time.Duration(tm.Seconds()))
+	t.text.Text = t.formatTime(time.Duration(tm.Seconds()))
 	t.text.Refresh()
 
 	t.ticker.Stop()
@@ -91,11 +91,11 @@ func (t *Timer) getWidget() *fyne.Container {
 }
 
 func (t *Timer) show(ui *UI) {
-	t.text.Text = t.format_time(time.Duration(t.tl))
+	t.text.Text = t.formatTime(time.Duration(t.tl))
 	t.text.Refresh()
 }
 
-func (t *Timer) format_time(tm time.Duration) string {
+func (t *Timer) formatTime(tm time.Duration) string {
 	s := int(tm.Seconds())
 	minutes := int(s/60) % 60
 	seconds := int(s % 60)
