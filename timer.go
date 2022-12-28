@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"image/color"
 	"time"
 
@@ -78,7 +77,7 @@ func (t *Timer) toggle() {
 func (t *Timer) set(tm time.Duration) {
 	t.tl = tm
 
-	t.text.Text = t.formatTime(t.tl)
+	t.text.Text = formatTime(t.tl)
 	t.text.Refresh()
 
 	t.ticker.Stop()
@@ -93,14 +92,6 @@ func (t *Timer) getWidget() *fyne.Container {
 }
 
 func (t *Timer) show(ui *UI) {
-	t.text.Text = t.formatTime(t.tl)
+	t.text.Text = formatTime(t.tl)
 	t.text.Refresh()
-}
-
-func (t *Timer) formatTime(tm time.Duration) string {
-	s := int(tm.Seconds())
-	minutes := int(s/60) % 60
-	seconds := int(s % 60)
-
-	return fmt.Sprintf("%02d:%02d", minutes, seconds)
 }

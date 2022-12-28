@@ -1,6 +1,9 @@
 package main
 
 import (
+	"fmt"
+	"time"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 )
@@ -14,6 +17,14 @@ func onTick(timer *Timer) {
 }
 
 func onFinish(timer *Timer) {
+}
+
+func formatTime(tm time.Duration) string {
+	s := int(tm.Seconds())
+	minutes := int(s/60) % 60
+	seconds := int(s % 60)
+
+	return fmt.Sprintf("%02d:%02d", minutes, seconds)
 }
 
 func main() {

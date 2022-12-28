@@ -2,9 +2,11 @@ package main
 
 import (
 	"fmt"
+	"image/color"
 	"time"
 
 	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
@@ -18,13 +20,32 @@ type UI struct {
 
 func (ui *UI) createContent() *fyne.Container {
 	timer := ui.timer.getWidget()
+	separator := widget.NewSeparator()
+	breaks := ui.createBreaksUI()
 	mediaButtons := ui.createMediaButtons()
 	timeButtons := ui.createTimeButtons()
 
 	return container.New(layout.NewVBoxLayout(),
 		timer,
+		breaks,
+		separator,
 		mediaButtons,
 		timeButtons,
+	)
+}
+
+func (ui *UI) createBreaksUI() *fyne.Container {
+	var breaks = make([]fyne.CanvasObject, len(DefaultBreaks))
+
+	for i, v := range DefaultBreaks {
+		breaks[i] = container.New(layout.NewVBoxLayout(),
+			canvas.NewRectangle(color.White),
+			canvas.NewText(formatTime(v), color.White),
+		)
+	}
+
+	return container.New(layout.NewGridLayout(3),
+		breaks...,
 	)
 }
 

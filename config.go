@@ -1,6 +1,8 @@
 package main
 
-import "time"
+import (
+	"time"
+)
 
 const (
 	// Window
@@ -19,5 +21,11 @@ var (
 		15 * time.Minute,
 		10 * time.Minute,
 		5 * time.Minute,
+	}
+
+	DefaultBreaks = [...]time.Duration{
+		5 * time.Minute,
+		5 * time.Minute,
+		15 * time.Minute,
 	}
 )
