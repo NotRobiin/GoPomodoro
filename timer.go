@@ -17,7 +17,7 @@ type Timer struct {
 	onFinish func(*Timer)
 	paused   bool
 	finished bool
-	tl       int
+	tl       time.Duration
 	text     *canvas.Text
 }
 
@@ -44,7 +44,7 @@ func (t *Timer) start() {
 					continue
 				}
 
-				t.tl--
+				t.tl -= time.Second
 
 				if t.tl < 0 {
 					t.finished = true
@@ -76,7 +76,9 @@ func (t *Timer) toggle() {
 }
 
 func (t *Timer) set(tm time.Duration) {
-	t.text.Text = t.formatTime(time.Duration(tm.Seconds()))
+	t.tl = tm
+
+	t.text.Text = t.formatTime(t.tl)
 	t.text.Refresh()
 
 	t.ticker.Stop()
@@ -91,7 +93,7 @@ func (t *Timer) getWidget() *fyne.Container {
 }
 
 func (t *Timer) show(ui *UI) {
-	t.text.Text = t.formatTime(time.Duration(t.tl))
+	t.text.Text = t.formatTime(t.tl)
 	t.text.Refresh()
 }
 
