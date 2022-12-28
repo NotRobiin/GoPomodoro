@@ -82,6 +82,10 @@ func (t *Timer) set(tm time.Duration) {
 	seconds := int(t.tl % 60)
 	t.text.Text = fmt.Sprintf("%02d:%02d", minutes, seconds)
 	t.text.Refresh()
+
+	t.ticker.Stop()
+	t.ticker = time.NewTicker(1 * time.Second)
+	t.start()
 }
 
 func (t *Timer) getWidget() *fyne.Container {
