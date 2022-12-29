@@ -31,6 +31,8 @@ func main() {
 	ui = new(UI)
 	ui.app = app.New()
 
+	ui.app.Settings().SetTheme(&newTheme{})
+
 	timer := create_timer(onTick, onFinish)
 	timer.set(TimerDefaultTime)
 

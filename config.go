@@ -1,6 +1,7 @@
 package main
 
 import (
+	"image/color"
 	"time"
 )
 
@@ -12,16 +13,14 @@ const (
 
 	// Timer
 	TimerDefaultTime = (25 * time.Minute)
-	TimerTextSize    = 75.0
 )
 
 var (
-	TimerDefaultTimes = [...]time.Duration{
-		25 * time.Minute,
-		15 * time.Minute,
-		10 * time.Minute,
-		5 * time.Minute,
-	}
+	// Theme
+	TimerTextSize  = float32(100)
+	TimerTextColor = color.White
+
+	BackgroundColor = color.RGBA{R: 186, G: 73, B: 73, A: 150}
 
 	DefaultBreaks = [...]time.Duration{
 		5 * time.Minute,
