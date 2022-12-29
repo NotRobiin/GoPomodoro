@@ -35,6 +35,7 @@ func main() {
 
 	timer := create_timer(onTick, onFinish)
 	timer.set(TimerDefaultTime)
+	timer.pause(false)
 
 	ui.timer = timer
 	ui.window = ui.app.NewWindow(WindowTitle)

@@ -7,7 +7,6 @@ import (
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/layout"
-	"fyne.io/fyne/v2/widget"
 )
 
 type UI struct {
@@ -17,36 +16,12 @@ type UI struct {
 }
 
 func (ui *UI) createContent() *fyne.Container {
-	timer := ui.createTimer()
+	timer := ui.timer.getWidget()
 	breaks := ui.createBreaksUI()
 
 	return container.New(layout.NewGridLayoutWithRows(2),
 		timer,
 		breaks,
-	)
-}
-
-func (ui *UI) createTimer() *fyne.Container {
-	pauseText := canvas.NewText("Paused", PauseTextColor)
-
-	return container.New(layout.NewVBoxLayout(),
-		container.New(layout.NewCenterLayout(),
-			container.New(layout.NewMaxLayout(),
-				widget.NewButton("", func() {
-					ui.timer.toggle()
-
-					if ui.timer.paused {
-						pauseText.Text = "Paused"
-					} else {
-						pauseText.Text = ""
-					}
-				}),
-				ui.timer.text,
-			),
-		),
-		container.New(layout.NewCenterLayout(),
-			pauseText,
-		),
 	)
 }
 
