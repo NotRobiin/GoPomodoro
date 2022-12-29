@@ -10,28 +10,7 @@ import (
 
 var (
 	ui *UI
-
-	isBreak      bool
-	currentBreak int
 )
-
-func onTick(timer *Timer) {
-	timer.show(ui)
-}
-
-func onFinish(timer *Timer) {
-	isBreak = !isBreak
-
-	if isBreak {
-		tm := DefaultBreaks[currentBreak]
-		timer.set(tm)
-		currentBreak = (currentBreak + 1) % len(DefaultBreaks)
-	} else {
-		timer.set(TimerDefaultTime)
-	}
-
-	timer.startTicker()
-}
 
 func formatTime(tm time.Duration) string {
 	s := int(tm.Seconds())
@@ -47,12 +26,6 @@ func main() {
 
 	ui.app.Settings().SetTheme(&newTheme{})
 
-	timer := create_timer(onTick, onFinish)
-	timer.set(TimerDefaultTime)
-	timer.startTicker()
-	timer.pause(false)
-
-	ui.timer = timer
 	ui.window = ui.app.NewWindow(WindowTitle)
 	ui.window.SetContent(ui.createContent())
 	ui.window.Resize(fyne.NewSize(WindowWidth, WindowHeight))

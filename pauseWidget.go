@@ -2,55 +2,41 @@ package main
 
 import (
 	"fmt"
-	"time"
 
 	"fyne.io/fyne/v2/canvas"
 )
 
 type PauseWidget struct {
 	widget *canvas.Text
-	ticker *time.Ticker
-	time   time.Duration
-	paused bool
+	timer  *Timer
 }
 
 func createPauseWidget() *PauseWidget {
-	return &PauseWidget{
-		widget: canvas.NewText("", PauseTextColor),
-		ticker: nil,
-		time:   0 * time.Second,
-	}
+	pw := new(PauseWidget)
+	pw.widget = canvas.NewText("", PauseTextColor)
+	pw.timer = createTimer(func() { pw.update() }, func() {})
+
+	return pw
 }
 
-func (pw *PauseWidget) startTimer() {
-	pw.ticker = time.NewTicker(1 * time.Second)
-	pw.paused = true
-	pw.updatePauseTimer()
-
-	go func() {
-		for {
-			select {
-			case <-pw.ticker.C:
-				pw.time += time.Second
-				pw.updatePauseTimer()
-			}
-		}
-	}()
+func (pw *PauseWidget) pause() {
+	pw.timer.pause()
+	pw.update()
 }
 
-func (pw *PauseWidget) stopTimer() {
-	if pw.ticker != nil {
-		pw.ticker.Stop()
-	}
-
-	pw.time = 0 * time.Second
-	pw.paused = false
-	pw.updatePauseTimer()
+func (pw *PauseWidget) unpause() {
+	pw.timer.unpause()
+	pw.update()
 }
 
-func (pw *PauseWidget) updatePauseTimer() {
-	if pw.paused {
-		pw.widget.Text = fmt.Sprintf("Paused (%v)", formatTime(pw.time))
+func (pw *PauseWidget) toggle() {
+	pw.timer.toggle()
+	pw.update()
+}
+
+func (pw *PauseWidget) update() {
+	if pw.timer.paused {
+		pw.widget.Text = fmt.Sprintf("Paused (%v)", formatTime(pw.timer.tl))
 	} else {
 		pw.widget.Text = ""
 	}

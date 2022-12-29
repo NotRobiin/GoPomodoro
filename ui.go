@@ -13,35 +13,31 @@ import (
 type UI struct {
 	app    fyne.App
 	window fyne.Window
-	timer  *Timer
 }
 
 func (ui *UI) createContent() *fyne.Container {
-	timer := ui.createTimerSegment()
+	timers := ui.createTimerSegment()
 	breaks := ui.createBreaksUI()
 
 	return container.New(layout.NewVBoxLayout(),
-		timer,
+		timers,
 		breaks,
 	)
 }
 
 func (ui *UI) createTimerSegment() *fyne.Container {
+	timeWidget := createTimeWidget()
 	pauseWidget := createPauseWidget()
+	toggleButtonWidget := widget.NewButton("", func() {
+		timeWidget.toggle()
+		pauseWidget.toggle()
+	})
 
 	return container.New(layout.NewVBoxLayout(),
 		container.New(layout.NewCenterLayout(),
 			container.New(layout.NewMaxLayout(),
-				widget.NewButton("", func() {
-					ui.timer.toggle()
-
-					if ui.timer.paused {
-						pauseWidget.startTimer()
-					} else {
-						pauseWidget.stopTimer()
-					}
-				}),
-				ui.timer.text,
+				toggleButtonWidget,
+				timeWidget.widget,
 			),
 		),
 		container.New(layout.NewCenterLayout(),
