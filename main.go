@@ -33,7 +33,6 @@ func main() {
 
 	timer := create_timer(onTick, onFinish)
 	timer.set(TimerDefaultTime)
-	timer.start()
 
 	ui.timer = timer
 	ui.window = ui.app.NewWindow(WindowTitle)

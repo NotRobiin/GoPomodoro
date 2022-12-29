@@ -26,7 +26,7 @@ func create_timer(onTick func(*Timer), onFinish func(*Timer)) *Timer {
 	t.ticker = time.NewTicker(1 * time.Second)
 	t.onTick = onTick
 	t.onFinish = onFinish
-	t.paused = false
+	t.paused = true
 	t.finished = false
 	t.text = canvas.NewText("", color.White)
 	t.text.TextSize = TimerTextSize
