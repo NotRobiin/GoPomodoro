@@ -1,7 +1,6 @@
 package main
 
 import (
-	"image/color"
 	"time"
 
 	"fyne.io/fyne/v2/canvas"
@@ -25,7 +24,7 @@ func create_timer(onTick func(*Timer), onFinish func(*Timer)) *Timer {
 	t.onFinish = onFinish
 	t.paused = true
 	t.finished = false
-	t.text = canvas.NewText("", color.White)
+	t.text = canvas.NewText("", TimerTextColor)
 	t.text.TextSize = TimerTextSize
 
 	return t
