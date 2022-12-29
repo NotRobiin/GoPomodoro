@@ -10,6 +10,9 @@ import (
 
 var (
 	ui *UI
+
+	isBreak      bool
+	currentBreak int
 )
 
 func onTick(timer *Timer) {
@@ -17,6 +20,17 @@ func onTick(timer *Timer) {
 }
 
 func onFinish(timer *Timer) {
+	isBreak = !isBreak
+
+	if isBreak {
+		tm := DefaultBreaks[currentBreak]
+		timer.set(tm)
+		currentBreak = (currentBreak + 1) % len(DefaultBreaks)
+	} else {
+		timer.set(TimerDefaultTime)
+	}
+
+	timer.startTicker()
 }
 
 func formatTime(tm time.Duration) string {
@@ -35,6 +49,7 @@ func main() {
 
 	timer := create_timer(onTick, onFinish)
 	timer.set(TimerDefaultTime)
+	timer.startTicker()
 	timer.pause(false)
 
 	ui.timer = timer

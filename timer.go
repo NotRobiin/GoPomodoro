@@ -16,7 +16,6 @@ type Timer struct {
 	onTick   func(*Timer)
 	onFinish func(*Timer)
 	paused   bool
-	finished bool
 	tl       time.Duration
 	text     *canvas.Text
 
@@ -32,7 +31,6 @@ func create_timer(onTick func(*Timer), onFinish func(*Timer)) *Timer {
 	t.onTick = onTick
 	t.onFinish = onFinish
 	t.paused = false
-	t.finished = false
 
 	t.text = canvas.NewText("", TimerTextColor)
 	t.text.TextSize = TimerTextSize
@@ -44,7 +42,7 @@ func create_timer(onTick func(*Timer), onFinish func(*Timer)) *Timer {
 	return t
 }
 
-func (t *Timer) createTicker() {
+func (t *Timer) startTicker() {
 	t.ticker = time.NewTicker(1 * time.Second)
 
 	go func() {
@@ -58,9 +56,8 @@ func (t *Timer) createTicker() {
 				t.tl -= time.Second
 
 				if t.tl < 0 {
-					t.finished = true
+					t.ticker.Stop()
 					t.onFinish(t)
-					t.stop()
 					return
 				}
 
@@ -68,10 +65,6 @@ func (t *Timer) createTicker() {
 			}
 		}
 	}()
-}
-
-func (t *Timer) stop() {
-	t.ticker.Stop()
 }
 
 func (t *Timer) pause(visible bool) {
@@ -101,10 +94,6 @@ func (t *Timer) resume() {
 		t.pauseTime = 0 * time.Second
 		t.updatePauseTimer()
 	}
-
-	if t.ticker == nil {
-		t.createTicker()
-	}
 }
 
 func (t *Timer) toggle() {
@@ -122,12 +111,6 @@ func (t *Timer) set(tm time.Duration) {
 
 	t.text.Text = formatTime(t.tl)
 	t.text.Refresh()
-
-	if t.ticker != nil {
-		t.ticker.Stop()
-	}
-
-	t.createTicker()
 }
 
 func (t *Timer) updatePauseTimer() {

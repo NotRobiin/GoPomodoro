@@ -12,7 +12,7 @@ const (
 	WindowHeight = 200
 
 	// Timer
-	TimerDefaultTime = (25 * time.Minute)
+	TimerDefaultTime = (3 * time.Second)
 )
 
 var (
@@ -25,8 +25,8 @@ var (
 	BackgroundColor = color.RGBA{R: 186, G: 73, B: 73, A: 150}
 
 	DefaultBreaks = [...]time.Duration{
-		5 * time.Minute,
-		5 * time.Minute,
-		15 * time.Minute,
+		5 * time.Second,
+		10 * time.Second,
+		15 * time.Second,
 	}
 )
