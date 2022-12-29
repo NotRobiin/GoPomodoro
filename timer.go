@@ -4,10 +4,7 @@ import (
 	"image/color"
 	"time"
 
-	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/canvas"
-	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/layout"
 )
 
 type Timer struct {
@@ -83,12 +80,6 @@ func (t *Timer) set(tm time.Duration) {
 	t.ticker.Stop()
 	t.ticker = time.NewTicker(1 * time.Second)
 	t.start()
-}
-
-func (t *Timer) getWidget() *fyne.Container {
-	return container.New(layout.NewCenterLayout(),
-		t.text,
-	)
 }
 
 func (t *Timer) show(ui *UI) {

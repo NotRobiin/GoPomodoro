@@ -19,7 +19,7 @@ type UI struct {
 }
 
 func (ui *UI) createContent() *fyne.Container {
-	timer := ui.timer.getWidget()
+	timer := ui.createTimer()
 	separator := widget.NewSeparator()
 	breaks := ui.createBreaksUI()
 	mediaButtons := ui.createMediaButtons()
@@ -31,6 +31,15 @@ func (ui *UI) createContent() *fyne.Container {
 		separator,
 		mediaButtons,
 		timeButtons,
+	)
+}
+
+func (ui *UI) createTimer() *fyne.Container {
+	return container.New(layout.NewCenterLayout(),
+		container.New(layout.NewMaxLayout(),
+			widget.NewButton("", func() { ui.timer.toggle() }),
+			ui.timer.text,
+		),
 	)
 }
 
