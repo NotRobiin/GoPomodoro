@@ -19,7 +19,7 @@ func (ui *UI) createContent() *fyne.Container {
 	timer := ui.timer.getWidget()
 	breaks := ui.createBreaksUI()
 
-	return container.New(layout.NewGridLayoutWithRows(2),
+	return container.New(layout.NewVBoxLayout(),
 		timer,
 		breaks,
 	)
@@ -35,7 +35,7 @@ func (ui *UI) createBreaksUI() *fyne.Container {
 		)
 	}
 
-	return container.New(layout.NewGridLayout(3),
+	return container.New(layout.NewGridLayout(len(breaks)),
 		breaks...,
 	)
 }

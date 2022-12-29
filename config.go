@@ -9,7 +9,7 @@ const (
 	// Window
 	WindowTitle  = "Pomodoro"
 	WindowWidth  = 300
-	WindowHeight = 150
+	WindowHeight = 200
 
 	// Timer
 	TimerDefaultTime = (25 * time.Minute)
