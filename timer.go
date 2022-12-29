@@ -44,7 +44,9 @@ func create_timer(onTick func(*Timer), onFinish func(*Timer)) *Timer {
 	return t
 }
 
-func (t *Timer) start() {
+func (t *Timer) createTicker() {
+	t.ticker = time.NewTicker(1 * time.Second)
+
 	go func() {
 		for {
 			select {
@@ -76,7 +78,6 @@ func (t *Timer) pause(visible bool) {
 	t.paused = true
 
 	if visible {
-
 		t.pauseTicker = time.NewTicker(1 * time.Second)
 		t.updatePauseTimer()
 
@@ -102,8 +103,7 @@ func (t *Timer) resume() {
 	}
 
 	if t.ticker == nil {
-		t.ticker = time.NewTicker(1 * time.Second)
-		t.start()
+		t.createTicker()
 	}
 }
 
@@ -127,8 +127,7 @@ func (t *Timer) set(tm time.Duration) {
 		t.ticker.Stop()
 	}
 
-	t.ticker = time.NewTicker(1 * time.Second)
-	t.start()
+	t.createTicker()
 }
 
 func (t *Timer) updatePauseTimer() {
