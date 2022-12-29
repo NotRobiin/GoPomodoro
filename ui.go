@@ -27,14 +27,25 @@ func (ui *UI) createContent() *fyne.Container {
 }
 
 func (ui *UI) createTimer() *fyne.Container {
-	return container.New(layout.NewCenterLayout(),
+	pauseText := canvas.NewText("Paused", PauseTextColor)
+
+	return container.New(layout.NewVBoxLayout(),
 		container.New(layout.NewCenterLayout(),
 			container.New(layout.NewMaxLayout(),
 				widget.NewButton("", func() {
 					ui.timer.toggle()
+
+					if ui.timer.paused {
+						pauseText.Text = "Paused"
+					} else {
+						pauseText.Text = ""
+					}
 				}),
 				ui.timer.text,
 			),
+		),
+		container.New(layout.NewCenterLayout(),
+			pauseText,
 		),
 	)
 }
