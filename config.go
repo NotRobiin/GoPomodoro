@@ -14,7 +14,7 @@ const (
 	WindowHeight = 200
 
 	// Timer
-	TimerDefaultTime = (5 * time.Second)
+	TimerDefaultTime = (25 * time.Minute)
 )
 
 var (
@@ -39,8 +39,8 @@ var (
 	BackgroundAnimationTime = 450 * time.Millisecond
 
 	DefaultBreaks = [...]time.Duration{
-		5 * time.Second,
-		5 * time.Second,
-		10 * time.Second,
+		5 * time.Minute,
+		5 * time.Minute,
+		15 * time.Minute,
 	}
 )
