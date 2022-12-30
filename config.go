@@ -14,7 +14,7 @@ const (
 	WindowHeight = 200
 
 	// Timer
-	TimerDefaultTime = (3 * time.Second)
+	TimerDefaultTime = (5 * time.Second)
 )
 
 var (
@@ -40,7 +40,7 @@ var (
 
 	DefaultBreaks = [...]time.Duration{
 		5 * time.Second,
+		5 * time.Second,
 		10 * time.Second,
-		15 * time.Second,
 	}
 )
