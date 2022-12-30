@@ -29,24 +29,15 @@ func (tw *TimeWidget) onTick() {
 }
 
 func (tw *TimeWidget) onFinish() {
-	isBreak = !isBreak
+	bn := breakNum
+	onTimerFinish()
+
 	newTime := TimerDefaultTime
 
+	// TODO: Fix that. breakNum updates in onTimerFinish
+	// and makes the timer fall behind one cycle, hence 'bn'.
 	if isBreak {
-		newTime = DefaultBreaks[breakNum]
-		breaks[breakNum].enable()
-		breakNum = (breakNum + 1) % len(DefaultBreaks)
-		ui.bg.animate(BackgroundColor, BackgroundColorBreak, BackgroundAnimationTime)
-	} else {
-		ui.bg.animate(BackgroundColorBreak, BackgroundColor, BackgroundAnimationTime)
-	}
-
-	sound.play(sound.cache["notification"])
-
-	if !isBreak && breakNum == 0 {
-		for i := range breaks {
-			breaks[i].disable()
-		}
+		newTime = DefaultBreaks[bn]
 	}
 
 	tw.timer.stop()
