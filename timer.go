@@ -47,11 +47,14 @@ func (t *Timer) create() {
 }
 
 func (t *Timer) stop() {
-	t.ticker.Stop()
+	if t.ticker != nil {
+		t.ticker.Stop()
+	}
+
 	t.ticker = nil
 }
 
-func (t *Timer) start() {
+func (t *Timer) countDown() {
 	if t.ticker == nil {
 		t.create()
 	}
@@ -72,6 +75,26 @@ func (t *Timer) start() {
 					return
 				}
 
+				t.onTick()
+			}
+		}
+	}()
+}
+
+func (t *Timer) countUp() {
+	if t.ticker == nil {
+		t.create()
+	}
+
+	go func() {
+		for {
+			select {
+			case <-t.ticker.C:
+				if t.paused {
+					continue
+				}
+
+				t.tl += time.Second
 				t.onTick()
 			}
 		}

@@ -24,7 +24,7 @@ func createTimeWidget() *TimeWidget {
 	tw.breakNum = 0
 
 	tw.set(TimerDefaultTime)
-	tw.timer.start()
+	tw.timer.countDown()
 
 	return tw
 }
@@ -56,11 +56,19 @@ func (tw *TimeWidget) onFinish() {
 
 	tw.timer.stop()
 	tw.set(newTime)
-	tw.timer.start()
+	tw.timer.countDown()
 }
 
 func (tw *TimeWidget) toggle() {
 	tw.timer.toggle()
+
+	if tw.timer.paused {
+		tw.widget.Color = TimerTextColorPaused
+	} else {
+		tw.widget.Color = TimerTextColor
+	}
+	
+	tw.widget.Refresh()
 }
 
 func (tw *TimeWidget) set(tm time.Duration) {
