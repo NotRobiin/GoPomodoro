@@ -59,7 +59,7 @@ func (ui *UI) createBreaksUI() *fyne.Container {
 		breaks[i] = createBreakWidget(v)
 
 		breaks[i].text.Text = formatTime(v)
-		breaks[i].rect.SetMinSize(fyne.NewSize(3, 3))
+		breaks[i].rect.SetMinSize(BreakRectSize)
 		breaks[i].disable()
 
 		widgets[i] = breaks[i].getWidget()

@@ -3,6 +3,8 @@ package main
 import (
 	"image/color"
 	"time"
+
+	"fyne.io/fyne/v2"
 )
 
 const (
@@ -30,6 +32,8 @@ var (
 
 	BreakEnabledTextColor = color.RGBA{R: 255, G: 255, B: 255, A: 255}
 	BreakEnabledRectColor = color.RGBA{R: 255, G: 255, B: 255, A: 255}
+
+	BreakRectSize = fyne.NewSize(3, 3)
 
 	DefaultBreaks = [...]time.Duration{
 		5 * time.Second,
