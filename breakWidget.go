@@ -32,15 +32,15 @@ func (bw *BreakWidget) getWidget() *fyne.Container {
 }
 
 func (bw *BreakWidget) disable() {
-	bw.text.Color = color.RGBA{R: 80, G: 80, B: 80, A: 75}
-	bw.rect.FillColor = color.RGBA{R: 80, G: 80, B: 80, A: 75}
+	bw.text.Color = BreakDisabledTextColor
+	bw.rect.FillColor = BreakDisabledRectColor
 	bw.rect.Refresh()
 	bw.text.Refresh()
 }
 
 func (bw *BreakWidget) enable() {
-	bw.text.Color = color.RGBA{R: 255, G: 255, B: 255, A: 255}
-	bw.rect.FillColor = color.RGBA{R: 255, G: 255, B: 255, A: 255}
+	bw.text.Color = BreakEnabledTextColor
+	bw.rect.FillColor = BreakEnabledRectColor
 	bw.rect.Refresh()
 	bw.text.Refresh()
 }
