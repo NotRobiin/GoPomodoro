@@ -33,5 +33,9 @@ func (m newTheme) Font(style fyne.TextStyle) fyne.Resource {
 }
 
 func (m newTheme) Size(name fyne.ThemeSizeName) float32 {
+	if name == theme.SizeNamePadding {
+		return 0
+	}
+
 	return theme.DefaultTheme().Size(name)
 }
