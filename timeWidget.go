@@ -9,9 +9,6 @@ import (
 type TimeWidget struct {
 	widget *canvas.Text
 	timer  *Timer
-
-	isBreak  bool
-	breakNum int
 }
 
 func createTimeWidget() *TimeWidget {
@@ -20,8 +17,6 @@ func createTimeWidget() *TimeWidget {
 	tw.widget = canvas.NewText("", TimerTextColor)
 	tw.widget.TextSize = TimerTextSize
 	tw.timer = createTimer(tw.onTick, tw.onFinish)
-	tw.isBreak = false
-	tw.breakNum = 0
 
 	tw.set(TimerDefaultTime)
 	tw.timer.countDown()
@@ -34,19 +29,19 @@ func (tw *TimeWidget) onTick() {
 }
 
 func (tw *TimeWidget) onFinish() {
-	tw.isBreak = !tw.isBreak
+	isBreak = !isBreak
 	newTime := TimerDefaultTime
 
-	if tw.isBreak {
-		newTime = DefaultBreaks[tw.breakNum]
-		breaks[tw.breakNum].enable()
-		tw.breakNum = (tw.breakNum + 1) % len(DefaultBreaks)
+	if isBreak {
+		newTime = DefaultBreaks[breakNum]
+		breaks[breakNum].enable()
+		breakNum = (breakNum + 1) % len(DefaultBreaks)
 		ui.bg.animate(BackgroundColor, BackgroundColorBreak, BackgroundAnimationTime)
 	} else {
 		ui.bg.animate(BackgroundColorBreak, BackgroundColor, BackgroundAnimationTime)
 	}
 
-	if !tw.isBreak && tw.breakNum == 0 {
+	if !isBreak && breakNum == 0 {
 		for i := range breaks {
 			breaks[i].disable()
 		}

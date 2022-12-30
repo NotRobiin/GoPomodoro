@@ -10,6 +10,8 @@ import (
 
 var ui *UI
 var breaks []*BreakWidget
+var isBreak bool
+var breakNum int
 
 func formatTime(tm time.Duration) string {
 	s := int(tm.Seconds())
