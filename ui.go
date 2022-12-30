@@ -1,8 +1,6 @@
 package main
 
 import (
-	"image/color"
-
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/layout"
@@ -12,6 +10,8 @@ import (
 type UI struct {
 	app    fyne.App
 	window fyne.Window
+
+	breaks []*BreakWidget
 }
 
 func (ui *UI) createContent() *fyne.Container {
@@ -46,20 +46,20 @@ func (ui *UI) createTimerSegment() *fyne.Container {
 }
 
 func (ui *UI) createBreaksUI() *fyne.Container {
-	var breaks = make([]fyne.CanvasObject, len(DefaultBreaks))
+	ui.breaks = make([]*BreakWidget, len(DefaultBreaks))
+	var widgets = make([]fyne.CanvasObject, len(DefaultBreaks))
 
 	for i, v := range DefaultBreaks {
-		b := createBreakWidget(v, color.White)
+		ui.breaks[i] = createBreakWidget(v)
 
-		b.text.Text = formatTime(v)
+		ui.breaks[i].text.Text = formatTime(v)
+		ui.breaks[i].rect.SetMinSize(fyne.NewSize(3, 3))
+		ui.breaks[i].disable()
 
-		breaks[i] = container.New(layout.NewVBoxLayout(),
-			b.rect,
-			b.text,
-		)
+		widgets[i] = ui.breaks[i].getWidget()
 	}
 
-	return container.New(layout.NewGridLayout(len(breaks)),
-		breaks...,
+	return container.New(layout.NewGridLayout(len(widgets)),
+		widgets...,
 	)
 }
