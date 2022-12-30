@@ -36,6 +36,8 @@ var (
 
 	BreakRectSize = fyne.NewSize(3, 3)
 
+	BackgroundAnimationTime = 450 * time.Millisecond
+
 	DefaultBreaks = [...]time.Duration{
 		5 * time.Second,
 		10 * time.Second,

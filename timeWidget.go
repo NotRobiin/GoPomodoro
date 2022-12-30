@@ -41,11 +41,9 @@ func (tw *TimeWidget) onFinish() {
 		newTime = DefaultBreaks[tw.breakNum]
 		breaks[tw.breakNum].enable()
 		tw.breakNum = (tw.breakNum + 1) % len(DefaultBreaks)
-		ui.background.FillColor = BackgroundColorBreak
-		ui.background.Refresh()
+		ui.bg.animate(BackgroundColor, BackgroundColorBreak, BackgroundAnimationTime)
 	} else {
-		ui.background.FillColor = BackgroundColor
-		ui.background.Refresh()
+		ui.bg.animate(BackgroundColorBreak, BackgroundColor, BackgroundAnimationTime)
 	}
 
 	if !tw.isBreak && tw.breakNum == 0 {
@@ -67,7 +65,7 @@ func (tw *TimeWidget) toggle() {
 	} else {
 		tw.widget.Color = TimerTextColor
 	}
-	
+
 	tw.widget.Refresh()
 }
 

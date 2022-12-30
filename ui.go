@@ -2,7 +2,6 @@ package main
 
 import (
 	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
@@ -12,16 +11,16 @@ type UI struct {
 	app    fyne.App
 	window fyne.Window
 
-	background *canvas.Rectangle
+	bg *Background
 }
 
 func (ui *UI) createContent() *fyne.Container {
-	ui.background = canvas.NewRectangle(BackgroundColor)
+	ui.bg = createBackground(BackgroundColor)
 	timers := ui.createTimerSegment()
 	breaks := ui.createBreaksUI()
 
 	return container.New(layout.NewMaxLayout(),
-		ui.background,
+		ui.bg.widget,
 
 		container.New(layout.NewVBoxLayout(),
 			timers,
