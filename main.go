@@ -25,17 +25,28 @@ func formatTime(tm time.Duration) string {
 	return fmt.Sprintf("%02d:%02d", minutes, seconds)
 }
 
-func onTimerFinish() {
+func onMainTimerFinish() {
 	isBreak = !isBreak
+	newTime := TimerDefaultTime
+	s := BackgroundColor
+	e := BackgroundColorBreak
 
-	// Update breaks UI, animate it.
+	// Update breaks guts.
 	if isBreak {
+		newTime = DefaultBreaks[breakNum]
 		breaks[breakNum].enable()
 		breakNum = (breakNum + 1) % len(DefaultBreaks)
-		ui.bg.animate(BackgroundColor, BackgroundColorBreak, BackgroundAnimationTime)
 	} else {
-		ui.bg.animate(BackgroundColorBreak, BackgroundColor, BackgroundAnimationTime)
+		s = BackgroundColorBreak
+		e = BackgroundColor
 	}
+
+	ui.bg.animate(s, e, BackgroundAnimationTime)
+
+	// Update main timer.
+	ui.timer.timer.stop()
+	ui.timer.set(newTime)
+	ui.timer.timer.countDown()
 
 	// Play notification sound.
 	sound.play(sound.cache["notification"])

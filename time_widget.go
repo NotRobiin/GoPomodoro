@@ -11,12 +11,12 @@ type TimeWidget struct {
 	timer  *Timer
 }
 
-func createTimeWidget() *TimeWidget {
+func createTimeWidget(finish func()) *TimeWidget {
 	tw := new(TimeWidget)
 
 	tw.widget = canvas.NewText("", TimerTextColor)
 	tw.widget.TextSize = TimerTextSize
-	tw.timer = createTimer(tw.onTick, tw.onFinish)
+	tw.timer = createTimer(tw.onTick, finish)
 
 	tw.set(TimerDefaultTime)
 	tw.timer.countDown()
@@ -26,23 +26,6 @@ func createTimeWidget() *TimeWidget {
 
 func (tw *TimeWidget) onTick() {
 	tw.update()
-}
-
-func (tw *TimeWidget) onFinish() {
-	bn := breakNum
-	onTimerFinish()
-
-	newTime := TimerDefaultTime
-
-	// TODO: Fix that. breakNum updates in onTimerFinish
-	// and makes the timer fall behind one cycle, hence 'bn'.
-	if isBreak {
-		newTime = DefaultBreaks[bn]
-	}
-
-	tw.timer.stop()
-	tw.set(newTime)
-	tw.timer.countDown()
 }
 
 func (tw *TimeWidget) toggle() {

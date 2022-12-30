@@ -11,7 +11,8 @@ type UI struct {
 	app    fyne.App
 	window fyne.Window
 
-	bg *Background
+	bg    *Background
+	timer *TimeWidget
 }
 
 func (ui *UI) createContent() *fyne.Container {
@@ -30,10 +31,10 @@ func (ui *UI) createContent() *fyne.Container {
 }
 
 func (ui *UI) createTimerSegment() *fyne.Container {
-	timeWidget := createTimeWidget()
+	ui.timer = createTimeWidget(onMainTimerFinish)
 	pauseWidget := createPauseWidget()
 	toggleButtonWidget := widget.NewButton("", func() {
-		timeWidget.toggle()
+		ui.timer.toggle()
 		pauseWidget.toggle()
 	})
 
@@ -41,7 +42,7 @@ func (ui *UI) createTimerSegment() *fyne.Container {
 		container.New(layout.NewCenterLayout(),
 			container.New(layout.NewMaxLayout(),
 				toggleButtonWidget,
-				timeWidget.widget,
+				ui.timer.widget,
 			),
 		),
 		container.New(layout.NewCenterLayout(),
