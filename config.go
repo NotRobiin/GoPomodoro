@@ -14,7 +14,9 @@ const (
 	WindowHeight = 200
 
 	// Timer
-	TimerDefaultTime = (25 * time.Minute)
+	TimerDefaultTime = (5 * time.Second)
+
+	NotificationSound = "./resources/sample.mp3"
 )
 
 var (
@@ -39,8 +41,8 @@ var (
 	BackgroundAnimationTime = 450 * time.Millisecond
 
 	DefaultBreaks = [...]time.Duration{
-		5 * time.Minute,
-		5 * time.Minute,
-		15 * time.Minute,
+		5 * time.Second,
+		5 * time.Second,
+		15 * time.Second,
 	}
 )

@@ -9,10 +9,13 @@ import (
 	"fyne.io/fyne/v2/driver/desktop"
 )
 
-var ui *UI
-var breaks []*BreakWidget
-var isBreak bool
-var breakNum int
+var (
+	ui       *UI
+	breaks   []*BreakWidget
+	isBreak  bool
+	breakNum int
+	sound    *Sound
+)
 
 func formatTime(tm time.Duration) string {
 	s := int(tm.Seconds())
@@ -23,6 +26,11 @@ func formatTime(tm time.Duration) string {
 }
 
 func main() {
+	sound = new(Sound)
+	sound.initContext()
+	sound.initCache()
+	sound.cache["notification"] = sound.open(NotificationSound)
+
 	ui = new(UI)
 	ui.app = app.New()
 

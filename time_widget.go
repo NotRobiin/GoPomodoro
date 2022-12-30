@@ -41,6 +41,8 @@ func (tw *TimeWidget) onFinish() {
 		ui.bg.animate(BackgroundColorBreak, BackgroundColor, BackgroundAnimationTime)
 	}
 
+	sound.play(sound.cache["notification"])
+
 	if !isBreak && breakNum == 0 {
 		for i := range breaks {
 			breaks[i].disable()
