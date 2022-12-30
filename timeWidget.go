@@ -48,7 +48,7 @@ func (tw *TimeWidget) onFinish() {
 		ui.background.Refresh()
 	}
 
-	if tw.breakNum == 0 {
+	if !tw.isBreak && tw.breakNum == 0 {
 		for i := range breaks {
 			breaks[i].disable()
 		}
