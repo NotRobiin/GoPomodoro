@@ -41,7 +41,14 @@ func (tw *TimeWidget) onFinish() {
 		newTime = DefaultBreaks[tw.breakNum]
 		breaks[tw.breakNum].enable()
 		tw.breakNum = (tw.breakNum + 1) % len(DefaultBreaks)
-	} else if tw.breakNum == 0 {
+		ui.background.FillColor = BackgroundColorBreak
+		ui.background.Refresh()
+	} else {
+		ui.background.FillColor = BackgroundColor
+		ui.background.Refresh()
+	}
+
+	if tw.breakNum == 0 {
 		for i := range breaks {
 			breaks[i].disable()
 		}
