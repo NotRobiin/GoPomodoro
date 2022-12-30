@@ -11,8 +11,9 @@ type UI struct {
 	app    fyne.App
 	window fyne.Window
 
-	bg    *Background
-	timer *TimeWidget
+	bg     *Background
+	timer  *TimeWidget
+	breaks []*BreakWidget
 }
 
 func (ui *UI) createContent() *fyne.Container {
@@ -52,20 +53,26 @@ func (ui *UI) createTimerSegment() *fyne.Container {
 }
 
 func (ui *UI) createBreaksUI() *fyne.Container {
-	breaks = make([]*BreakWidget, len(DefaultBreaks))
+	ui.breaks = make([]*BreakWidget, len(DefaultBreaks))
 	var widgets = make([]fyne.CanvasObject, len(DefaultBreaks))
 
 	for i, v := range DefaultBreaks {
-		breaks[i] = createBreakWidget(v)
+		ui.breaks[i] = createBreakWidget(v)
 
-		breaks[i].text.Text = formatTime(v)
-		breaks[i].rect.SetMinSize(BreakRectSize)
-		breaks[i].disable()
+		ui.breaks[i].text.Text = formatTime(v)
+		ui.breaks[i].rect.SetMinSize(BreakRectSize)
+		ui.breaks[i].disable()
 
-		widgets[i] = breaks[i].getWidget()
+		widgets[i] = ui.breaks[i].getWidget()
 	}
 
 	return container.New(layout.NewGridLayout(len(widgets)),
 		widgets...,
 	)
+}
+
+func (ui *UI) disableBreaks() {
+	for i := range ui.breaks {
+		ui.breaks[i].disable()
+	}
 }

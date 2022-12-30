@@ -11,7 +11,6 @@ import (
 
 var (
 	ui       *UI
-	breaks   []*BreakWidget
 	isBreak  bool
 	breakNum int
 	sound    *Sound
@@ -34,7 +33,7 @@ func onMainTimerFinish() {
 	// Update breaks guts.
 	if isBreak {
 		newTime = DefaultBreaks[breakNum]
-		breaks[breakNum].enable()
+		ui.breaks[breakNum].enable()
 		breakNum = (breakNum + 1) % len(DefaultBreaks)
 	} else {
 		s = BackgroundColorBreak
@@ -48,15 +47,13 @@ func onMainTimerFinish() {
 	ui.timer.set(newTime)
 	ui.timer.timer.countDown()
 
-	// Play notification sound.
-	sound.play(sound.cache["notification"])
-
 	// Dim all the break widgets when we cycle back to the beginning.
 	if !isBreak && breakNum == 0 {
-		for i := range breaks {
-			breaks[i].disable()
-		}
+		ui.disableBreaks()
 	}
+
+	// Play notification sound.
+	sound.play(sound.cache["notification"])
 }
 
 func main() {
