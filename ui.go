@@ -4,7 +4,6 @@ import (
 	"image/color"
 
 	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
@@ -50,9 +49,13 @@ func (ui *UI) createBreaksUI() *fyne.Container {
 	var breaks = make([]fyne.CanvasObject, len(DefaultBreaks))
 
 	for i, v := range DefaultBreaks {
+		b := createBreakWidget(v, color.White)
+
+		b.text.Text = formatTime(v)
+
 		breaks[i] = container.New(layout.NewVBoxLayout(),
-			canvas.NewRectangle(color.White),
-			canvas.NewText(formatTime(v), color.White),
+			b.rect,
+			b.text,
 		)
 	}
 
