@@ -3,6 +3,7 @@ package main
 import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/driver/desktop"
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
 )
@@ -10,10 +11,24 @@ import (
 type UI struct {
 	app    fyne.App
 	window fyne.Window
+	tray   desktop.App
 
 	bg     *Background
 	timer  *TimeWidget
 	breaks []*BreakWidget
+}
+
+func (ui *UI) createTray() {
+	if desk, ok := ui.app.(desktop.App); ok {
+		ui.tray = desk
+
+		m := fyne.NewMenu(WindowTitle,
+			fyne.NewMenuItem("Show", func() {
+				ui.window.Show()
+			}))
+
+		ui.tray.SetSystemTrayMenu(m)
+	}
 }
 
 func (ui *UI) createContent() *fyne.Container {

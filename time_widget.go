@@ -11,12 +11,12 @@ type TimeWidget struct {
 	timer  *Timer
 }
 
-func createTimeWidget(finish func()) *TimeWidget {
+func createTimeWidget(onFinish func()) *TimeWidget {
 	tw := new(TimeWidget)
 
 	tw.widget = canvas.NewText("", TimerTextColor)
 	tw.widget.TextSize = TimerTextSize
-	tw.timer = createTimer(tw.onTick, finish)
+	tw.timer = createTimer(tw.onTick, onFinish)
 
 	tw.set(TimerDefaultTime)
 	tw.timer.countDown()
