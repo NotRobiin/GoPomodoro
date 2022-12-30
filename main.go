@@ -8,9 +8,8 @@ import (
 	"fyne.io/fyne/v2/app"
 )
 
-var (
-	ui *UI
-)
+var ui *UI
+var breaks []*BreakWidget
 
 func formatTime(tm time.Duration) string {
 	s := int(tm.Seconds())

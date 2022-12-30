@@ -10,8 +10,6 @@ import (
 type UI struct {
 	app    fyne.App
 	window fyne.Window
-
-	breaks []*BreakWidget
 }
 
 func (ui *UI) createContent() *fyne.Container {
@@ -46,17 +44,17 @@ func (ui *UI) createTimerSegment() *fyne.Container {
 }
 
 func (ui *UI) createBreaksUI() *fyne.Container {
-	ui.breaks = make([]*BreakWidget, len(DefaultBreaks))
+	breaks = make([]*BreakWidget, len(DefaultBreaks))
 	var widgets = make([]fyne.CanvasObject, len(DefaultBreaks))
 
 	for i, v := range DefaultBreaks {
-		ui.breaks[i] = createBreakWidget(v)
+		breaks[i] = createBreakWidget(v)
 
-		ui.breaks[i].text.Text = formatTime(v)
-		ui.breaks[i].rect.SetMinSize(fyne.NewSize(3, 3))
-		ui.breaks[i].disable()
+		breaks[i].text.Text = formatTime(v)
+		breaks[i].rect.SetMinSize(fyne.NewSize(3, 3))
+		breaks[i].disable()
 
-		widgets[i] = ui.breaks[i].getWidget()
+		widgets[i] = breaks[i].getWidget()
 	}
 
 	return container.New(layout.NewGridLayout(len(widgets)),

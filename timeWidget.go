@@ -39,11 +39,11 @@ func (tw *TimeWidget) onFinish() {
 
 	if tw.isBreak {
 		newTime = DefaultBreaks[tw.breakNum]
-		ui.breaks[tw.breakNum].enable()
+		breaks[tw.breakNum].enable()
 		tw.breakNum = (tw.breakNum + 1) % len(DefaultBreaks)
 	} else if tw.breakNum == 0 {
-		for i := range ui.breaks {
-			ui.breaks[i].disable()
+		for i := range breaks {
+			breaks[i].disable()
 		}
 	}
 
