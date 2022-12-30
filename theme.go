@@ -17,8 +17,6 @@ func (m newTheme) Color(name fyne.ThemeColorName, variant fyne.ThemeVariant) col
 	switch name {
 	case theme.ColorNameButton, theme.ColorNameHover:
 		return none
-		// case theme.ColorNameBackground:
-		// 	return BackgroundColor
 	}
 
 	return theme.DefaultTheme().Color(name, variant)
