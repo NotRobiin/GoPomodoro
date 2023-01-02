@@ -99,12 +99,10 @@ func (ui *UI) createNotificationButton() *widget.Button {
 		sound.toggle()
 
 		if sound.enabled {
-			b.Icon = theme.VolumeUpIcon()
+			b.SetIcon(theme.VolumeUpIcon())
 		} else {
-			b.Icon = theme.VolumeMuteIcon()
+			b.SetIcon(theme.VolumeMuteIcon())
 		}
-
-		b.Refresh()
 	})
 
 	s := theme.IconInlineSize() * float32(NotificationButtonMultiplier)
