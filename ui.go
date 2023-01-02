@@ -50,8 +50,12 @@ func (ui *UI) createTimerSegment() *fyne.Container {
 	ui.timer = createTimeWidget(onMainTimerFinish)
 	pauseWidget := createPauseWidget()
 	toggleButtonWidget := widget.NewButton("", func() {
-		ui.timer.toggle()
-		pauseWidget.toggle()
+		if ui.timer.started {
+			ui.timer.toggle()
+			pauseWidget.toggle()
+		} else {
+			ui.timer.start()
+		}
 	})
 
 	return container.New(layout.NewVBoxLayout(),

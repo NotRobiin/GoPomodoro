@@ -7,21 +7,28 @@ import (
 )
 
 type TimeWidget struct {
-	widget *canvas.Text
-	timer  *Timer
+	widget  *canvas.Text
+	timer   *Timer
+	started bool
 }
 
 func createTimeWidget(onFinish func()) *TimeWidget {
 	tw := new(TimeWidget)
 
 	tw.widget = canvas.NewText("", TimerTextColor)
-	tw.widget.TextSize = TimerTextSize
+	tw.widget.Text = TimerStartText
+	tw.widget.TextSize = TimerTextSizeStart
 	tw.timer = createTimer(tw.onTick, onFinish)
+
+	return tw
+}
+
+func (tw *TimeWidget) start() {
+	tw.widget.TextSize = TimerTextSize
+	tw.started = true
 
 	tw.set(TimerDefaultTime)
 	tw.timer.countDown()
-
-	return tw
 }
 
 func (tw *TimeWidget) onTick() {
