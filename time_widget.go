@@ -17,14 +17,13 @@ func createTimeWidget(onFinish func()) *TimeWidget {
 
 	tw.widget = canvas.NewText("", TimerTextColor)
 	tw.widget.Text = TimerStartText
-	tw.widget.TextSize = TimerTextSizeStart
+	tw.widget.TextSize = TimerTextSize
 	tw.timer = createTimer(tw.onTick, onFinish)
 
 	return tw
 }
 
 func (tw *TimeWidget) start() {
-	tw.widget.TextSize = TimerTextSize
 	tw.started = true
 
 	tw.set(TimerDefaultTime)

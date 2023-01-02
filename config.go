@@ -20,7 +20,6 @@ const (
 var (
 	// Theme
 	TimerTextSize        = float32(100)
-	TimerTextSizeStart   = float32(100)
 	TimerStartText       = "Start!"
 	TimerTextColor       = color.RGBA{R: 255, G: 255, B: 255, A: 255}
 	TimerTextColorPaused = color.RGBA{R: 80, G: 80, B: 80, A: 75}
