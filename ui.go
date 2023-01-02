@@ -5,6 +5,7 @@ import (
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/driver/desktop"
 	"fyne.io/fyne/v2/layout"
+	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 )
 
@@ -35,9 +36,11 @@ func (ui *UI) createContent() *fyne.Container {
 	ui.bg = createBackground(BackgroundColor)
 	timers := ui.createTimerSegment()
 	breaks := ui.createBreaksUI()
+	soundToggle := ui.createNotificationButton()
 
 	return container.New(layout.NewMaxLayout(),
 		ui.bg.widget,
+		container.NewWithoutLayout(soundToggle),
 
 		container.New(layout.NewVBoxLayout(),
 			timers,
@@ -88,6 +91,28 @@ func (ui *UI) createBreaksUI() *fyne.Container {
 	return container.New(layout.NewGridLayout(len(widgets)),
 		widgets...,
 	)
+}
+
+func (ui *UI) createNotificationButton() *widget.Button {
+	var b *widget.Button
+	b = widget.NewButtonWithIcon("", theme.VolumeUpIcon(), func() {
+		sound.toggle()
+
+		if sound.enabled {
+			b.Icon = theme.VolumeUpIcon()
+		} else {
+			b.Icon = theme.VolumeMuteIcon()
+		}
+
+		b.Refresh()
+	})
+
+	s := theme.IconInlineSize() * float32(NotificationButtonMultiplier)
+
+	b.Move(fyne.NewPos(WindowWidth-s, 0))
+	b.Resize(fyne.NewSize(s, s))
+
+	return b
 }
 
 func (ui *UI) disableBreaks() {

@@ -51,13 +51,14 @@ func onMainTimerFinish() {
 		ui.disableBreaks()
 	}
 
-	sound.play(sound.cache["notification"])
+	if sound.enabled {
+		sound.play(sound.cache["notification"])
+	}
 }
 
 func main() {
 	sound = new(Sound)
-	sound.initContext()
-	sound.initCache()
+	sound.init()
 	sound.cache["notification"] = sound.open(NotificationSound)
 
 	ui = new(UI)

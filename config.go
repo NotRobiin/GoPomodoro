@@ -15,8 +15,6 @@ const (
 
 	// Timer
 	TimerDefaultTime = (5 * time.Second)
-
-	NotificationSound = "./resources/sample.mp3"
 )
 
 var (
@@ -27,11 +25,15 @@ var (
 	TimerTextColor       = color.RGBA{R: 255, G: 255, B: 255, A: 255}
 	TimerTextColorPaused = color.RGBA{R: 80, G: 80, B: 80, A: 75}
 
+	// Pause
 	PauseTextColor = color.RGBA{R: 255, G: 255, B: 255, A: 255}
 
-	BackgroundColor      = color.RGBA{R: 186, G: 73, B: 73, A: 150}
-	BackgroundColorBreak = color.RGBA{R: 102, G: 153, B: 255, A: 150}
+	// Background
+	BackgroundColor         = color.RGBA{R: 186, G: 73, B: 73, A: 150}
+	BackgroundColorBreak    = color.RGBA{R: 102, G: 153, B: 255, A: 150}
+	BackgroundAnimationTime = 450 * time.Millisecond
 
+	// Breaks
 	BreakDisabledTextColor = color.RGBA{R: 80, G: 80, B: 80, A: 75}
 	BreakDisabledRectColor = color.RGBA{R: 80, G: 80, B: 80, A: 75}
 
@@ -40,7 +42,9 @@ var (
 
 	BreakRectSize = fyne.NewSize(3, 3)
 
-	BackgroundAnimationTime = 450 * time.Millisecond
+	// Notifications
+	NotificationButtonMultiplier = 1.5 // Default size (theme.IconInlineSize()) * value
+	NotificationSound            = "./resources/sample.mp3"
 
 	DefaultBreaks = [...]time.Duration{
 		5 * time.Second,
