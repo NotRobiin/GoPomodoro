@@ -44,7 +44,7 @@ var (
 
 	// Notifications
 	NotificationButtonMultiplier = 1.5 // Default size (theme.IconInlineSize()) * value
-	NotificationSound            = "./resources/sample.mp3"
+	NotificationSound            = "./resources/notification.mp3"
 
 	DefaultBreaks = [...]time.Duration{
 		5 * time.Second,
