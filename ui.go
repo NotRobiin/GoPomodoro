@@ -1,7 +1,10 @@
 package main
 
 import (
+	"image/color"
+
 	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/driver/desktop"
 	"fyne.io/fyne/v2/layout"
@@ -58,6 +61,8 @@ func (ui *UI) createSettings() *SettingsWidget {
 	s.toggleButton.Move(fyne.NewPos(WindowWidth-theme.IconInlineSize(), 0))
 	s.toggleButton.Resize(fyne.NewSize(theme.IconInlineSize(), theme.IconInlineSize()))
 
+	title := container.New(layout.NewCenterLayout(), canvas.NewText("Settings", color.White))
+
 	sSound := widget.NewCheck("Sound", func(v bool) { sound.enabled = v })
 	sSound.SetChecked(sound.enabled)
 
@@ -65,6 +70,7 @@ func (ui *UI) createSettings() *SettingsWidget {
 	sAutoStart.SetChecked(autoStartEnabled)
 
 	s.create(ui.window.Canvas(), func() { s.toggle() },
+		title,
 		sSound,
 		sAutoStart,
 	)
