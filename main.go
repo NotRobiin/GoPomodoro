@@ -46,7 +46,12 @@ func onMainTimerFinish() {
 	// Update main timer.
 	ui.timer.timer.stop()
 	ui.timer.set(newTime)
-	ui.timer.timer.countDown()
+
+	if autoStartEnabled {
+		ui.timer.timer.countDown()
+	} else {
+		ui.timer.started = false
+	}
 
 	// Dim all the break widgets when we cycle back to the beginning.
 	if !isBreak && breakNum == 0 {

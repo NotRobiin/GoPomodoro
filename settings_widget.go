@@ -36,8 +36,7 @@ type SettingsWidget struct {
 
 func (sw *SettingsWidget) create(c fyne.Canvas, onDismiss func(), settings ...fyne.CanvasObject) {
 	sw.widget = container.New(layout.NewVBoxLayout(), settings...)
-
-	sw.overlay = NewTapPopUp(sw.widget, c, onDismiss, func() {})
+	sw.overlay = NewTapPopUp(sw.widget, c, onDismiss, onDismiss)
 }
 
 func (sw *SettingsWidget) toggle() {
