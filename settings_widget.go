@@ -17,11 +17,13 @@ func NewTapPopUp(content fyne.CanvasObject, canvas fyne.Canvas, onTap, onTapSeco
 	return &TapPopUp{widget.NewPopUp(content, canvas), onTap, onTapSecondary}
 }
 
+// TODO: This is never called
 func (p *TapPopUp) Tapped(_ *fyne.PointEvent) {
 	p.onTap()
 	p.PopUp.Tapped(nil)
 }
 
+// TODO: This is never called
 func (p *TapPopUp) TappedSecondary(_ *fyne.PointEvent) {
 	p.onTapSecondary()
 	p.PopUp.TappedSecondary(nil)
@@ -40,13 +42,13 @@ func (sw *SettingsWidget) create(c fyne.Canvas, onDismiss func(), settings ...fy
 }
 
 func (sw *SettingsWidget) toggle() {
-	sw.enabled = !sw.enabled
-
 	if sw.enabled {
-		sw.show()
-	} else {
 		sw.hide()
+	} else {
+		sw.show()
 	}
+
+	sw.enabled = !sw.enabled
 }
 
 func (sw *SettingsWidget) hide() {
