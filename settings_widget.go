@@ -11,22 +11,38 @@ type TapPopUp struct {
 	*widget.PopUp
 
 	onTap, onTapSecondary func()
+	overlayShown          bool
 }
 
 func NewTapPopUp(content fyne.CanvasObject, canvas fyne.Canvas, onTap, onTapSecondary func()) *TapPopUp {
-	return &TapPopUp{widget.NewPopUp(content, canvas), onTap, onTapSecondary}
+	return &TapPopUp{PopUp: widget.NewPopUp(content, canvas), onTap: onTap, onTapSecondary: onTapSecondary}
 }
 
-// TODO: This is never called
 func (p *TapPopUp) Tapped(_ *fyne.PointEvent) {
 	p.onTap()
 	p.PopUp.Tapped(nil)
 }
 
-// TODO: This is never called
 func (p *TapPopUp) TappedSecondary(_ *fyne.PointEvent) {
 	p.onTapSecondary()
 	p.PopUp.TappedSecondary(nil)
+}
+
+func (p *TapPopUp) Show() {
+	if !p.overlayShown {
+		p.Canvas.Overlays().Add(p)
+		p.overlayShown = true
+	}
+	p.Refresh()
+	p.BaseWidget.Show()
+}
+
+func (p *TapPopUp) Hide() {
+	if p.overlayShown {
+		p.Canvas.Overlays().Remove(p)
+		p.overlayShown = false
+	}
+	p.BaseWidget.Hide()
 }
 
 type SettingsWidget struct {
