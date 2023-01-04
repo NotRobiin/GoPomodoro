@@ -31,6 +31,7 @@ var (
 	BackgroundColor         = color.RGBA{R: 186, G: 73, B: 73, A: 150}
 	BackgroundColorBreak    = color.RGBA{R: 102, G: 153, B: 255, A: 150}
 	BackgroundAnimationTime = 450 * time.Millisecond
+	OverlayBackgroundColor  = color.RGBA{R: 186, G: 73, B: 73, A: 237}
 
 	// Breaks
 	BreakDisabledTextColor = color.RGBA{R: 80, G: 80, B: 80, A: 75}
