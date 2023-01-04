@@ -10,9 +10,10 @@ import (
 )
 
 type UI struct {
-	app    fyne.App
-	window fyne.Window
-	tray   desktop.App
+	app      fyne.App
+	window   fyne.Window
+	tray     desktop.App
+	settings *SettingsWidget
 
 	bg     *Background
 	timer  *TimeWidget
@@ -36,17 +37,41 @@ func (ui *UI) createContent() *fyne.Container {
 	ui.bg = createBackground(BackgroundColor)
 	timers := ui.createTimerSegment()
 	breaks := ui.createBreaksUI()
-	soundToggle := ui.createNotificationButton()
+	ui.settings = ui.createSettings()
 
 	return container.New(layout.NewMaxLayout(),
 		ui.bg.widget,
-		container.NewWithoutLayout(soundToggle),
+		ui.settings.overlay,
+		container.NewWithoutLayout(ui.settings.toggleButton),
 
 		container.New(layout.NewVBoxLayout(),
 			timers,
 			breaks,
 		),
 	)
+}
+
+func (ui *UI) createSettings() *SettingsWidget {
+	s := &SettingsWidget{}
+
+	s.toggleButton = widget.NewButtonWithIcon("", theme.SettingsIcon(), func() { s.toggle() })
+	s.toggleButton.Move(fyne.NewPos(WindowWidth-theme.IconInlineSize(), 0))
+	s.toggleButton.Resize(fyne.NewSize(theme.IconInlineSize(), theme.IconInlineSize()))
+
+	sSound := widget.NewCheck("Sound", func(v bool) { sound.enabled = v })
+	sSound.SetChecked(sound.enabled)
+
+	sAutoStart := widget.NewCheck("Auto-start", func(v bool) { autoStartEnabled = v })
+	sAutoStart.SetChecked(autoStartEnabled)
+
+	s.create(ui.window.Canvas(), func() { s.toggle() },
+		sSound,
+		sAutoStart,
+	)
+
+	s.hide()
+
+	return s
 }
 
 func (ui *UI) createTimerSegment() *fyne.Container {
@@ -91,26 +116,6 @@ func (ui *UI) createBreaksUI() *fyne.Container {
 	return container.New(layout.NewGridLayout(len(widgets)),
 		widgets...,
 	)
-}
-
-func (ui *UI) createNotificationButton() *widget.Button {
-	var b *widget.Button
-	b = widget.NewButtonWithIcon("", theme.VolumeUpIcon(), func() {
-		sound.toggle()
-
-		if sound.enabled {
-			b.SetIcon(theme.VolumeUpIcon())
-		} else {
-			b.SetIcon(theme.VolumeMuteIcon())
-		}
-	})
-
-	s := theme.IconInlineSize() * float32(NotificationButtonMultiplier)
-
-	b.Move(fyne.NewPos(WindowWidth-s, 0))
-	b.Resize(fyne.NewSize(s, s))
-
-	return b
 }
 
 func (ui *UI) disableBreaks() {

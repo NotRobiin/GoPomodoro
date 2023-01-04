@@ -13,6 +13,8 @@ var (
 	isBreak  bool
 	breakNum int
 	sound    *Sound
+
+	autoStartEnabled bool
 )
 
 func formatTime(tm time.Duration) string {
