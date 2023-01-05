@@ -9,12 +9,11 @@ import (
 )
 
 var (
+	settings *Settings
 	ui       *UI
 	isBreak  bool
 	breakNum int
 	sound    *Sound
-
-	autoStartEnabled bool
 )
 
 func formatTime(tm time.Duration) string {
@@ -47,7 +46,7 @@ func onMainTimerFinish() {
 	ui.timer.timer.stop()
 	ui.timer.set(newTime)
 
-	if autoStartEnabled {
+	if settings.autoStartEnabled {
 		ui.timer.timer.countDown()
 	} else {
 		ui.timer.started = false
@@ -58,12 +57,14 @@ func onMainTimerFinish() {
 		ui.disableBreaks()
 	}
 
-	if sound.enabled {
+	if settings.soundEnabled {
 		sound.play(sound.cache["notification"])
 	}
 }
 
 func main() {
+	settings = &DefaultSettings
+
 	sound = new(Sound)
 	sound.init()
 	sound.cache["notification"] = sound.open(NotificationSound)

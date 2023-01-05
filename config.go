@@ -18,6 +18,12 @@ const (
 )
 
 var (
+	// Custom settings
+	DefaultSettings = Settings{
+		soundEnabled:     true,
+		autoStartEnabled: false,
+	}
+
 	// Theme
 	TimerTextSize        = float32(100)
 	TimerStartText       = "Start!"

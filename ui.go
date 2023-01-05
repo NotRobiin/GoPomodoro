@@ -63,11 +63,11 @@ func (ui *UI) createSettings() *SettingsWidget {
 
 	title := container.New(layout.NewCenterLayout(), canvas.NewText("Settings", color.White))
 
-	sSound := widget.NewCheck("Sound", func(v bool) { sound.enabled = v })
-	sSound.SetChecked(sound.enabled)
+	sSound := widget.NewCheck("Sound", func(v bool) { settings.soundEnabled = v })
+	sSound.SetChecked(settings.soundEnabled)
 
-	sAutoStart := widget.NewCheck("Auto-start", func(v bool) { autoStartEnabled = v })
-	sAutoStart.SetChecked(autoStartEnabled)
+	sAutoStart := widget.NewCheck("Auto-start", func(v bool) { settings.autoStartEnabled = v })
+	sAutoStart.SetChecked(settings.autoStartEnabled)
 
 	s.create(ui.window.Canvas(), func() { s.toggle() },
 		title,
