@@ -83,24 +83,25 @@ func (ui *UI) createSettings() *SettingsWidget {
 
 	sTimer = widget.NewCheckGroup(times, func(s []string) {
 		if len(s) > 1 {
-			chosen := s[len(s)-1]
-
-			res := strings.Split(chosen, ":")
-			min, _ := strconv.Atoi(res[0])
-			sec, _ := strconv.Atoi(res[1])
-
-			settings.timer = time.Duration(min)*time.Minute + time.Duration(sec)*time.Second
-
-			if !ui.timer.started {
-				ui.timer.set(settings.timer)
-			}
-
-			sTimer.SetSelected([]string{chosen})
+			return
 		}
+
+		chosen := s[len(s)-1]
+
+		res := strings.Split(chosen, ":")
+		min, _ := strconv.Atoi(res[0])
+		sec, _ := strconv.Atoi(res[1])
+
+		settings.timer = time.Duration(min)*time.Minute + time.Duration(sec)*time.Second
+
+		if !ui.timer.started {
+			ui.timer.set(settings.timer)
+		}
+
+		sTimer.SetSelected([]string{chosen})
 	})
 	sTimer.Horizontal = true
 	sTimer.SetSelected([]string{formatTime(settings.timer)})
-
 	s.add("Timer", container.New(layout.NewHBoxLayout(), sTimer), layout.NewHBoxLayout(), true)
 
 	s.hide()
