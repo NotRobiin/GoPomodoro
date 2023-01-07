@@ -73,11 +73,6 @@ func (ui *UI) createSettings() *SettingsWidget {
 	sAutoStart.SetChecked(settings.autoStartEnabled)
 	s.add("Auto-start", container.New(layout.NewMaxLayout(), sAutoStart), layout.NewHBoxLayout(), true)
 
-	// Volume
-	sVolume := widget.NewSlider(0, 100)
-	sVolume.OnChanged = func(v float64) { settings.notificationVolume = v }
-	s.add("Volume", container.New(layout.NewMaxLayout(), sVolume), layout.NewAdaptiveGridLayout(2), false)
-
 	// Timer
 	var sTimer *widget.CheckGroup
 	var times []string

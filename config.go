@@ -25,10 +25,9 @@ var (
 
 	// Custom settings
 	DefaultSettings = Settings{
-		soundEnabled:       true,
-		autoStartEnabled:   false,
-		notificationVolume: 1.0,
-		timer:              TimerDefaultTime,
+		soundEnabled:     true,
+		autoStartEnabled: false,
+		timer:            TimerDefaultTime,
 	}
 
 	// Theme
