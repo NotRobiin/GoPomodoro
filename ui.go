@@ -95,6 +95,11 @@ func (ui *UI) createSettings() *SettingsWidget {
 			sec, _ := strconv.Atoi(res[1])
 
 			settings.timer = time.Duration(min)*time.Minute + time.Duration(sec)*time.Second
+
+			if !ui.timer.started {
+				ui.timer.set(settings.timer)
+			}
+
 			sTimer.SetSelected([]string{chosen})
 		}
 	})
