@@ -60,13 +60,13 @@ func (ui *UI) createSettings() *SettingsWidget {
 	s.toggleButton.Resize(fyne.NewSize(theme.IconInlineSize(), theme.IconInlineSize()))
 
 	// Sound
-	sSound := widget.NewCheck("", func(v bool) { settings.soundEnabled = v; ui.app.Preferences().SetBool("sound", v) })
-	sSound.SetChecked(settings.soundEnabled)
+	sSound := widget.NewCheck("", func(v bool) { ui.app.Preferences().SetBool("sound", v) })
+	sSound.SetChecked(ui.app.Preferences().BoolWithFallback("sound", DefaultSettings.soundEnabled))
 	s.add("Sound", container.New(layout.NewMaxLayout(), sSound), layout.NewHBoxLayout(), true)
 
 	// Auto start
-	sAutoStart := widget.NewCheck("", func(v bool) { settings.autoStartEnabled = v; ui.app.Preferences().SetBool("auto-start", v) })
-	sAutoStart.SetChecked(settings.autoStartEnabled)
+	sAutoStart := widget.NewCheck("", func(v bool) { ui.app.Preferences().SetBool("auto-start", v) })
+	sAutoStart.SetChecked(ui.app.Preferences().BoolWithFallback("auto-start", DefaultSettings.autoStartEnabled))
 	s.add("Auto-start", container.New(layout.NewMaxLayout(), sAutoStart), layout.NewHBoxLayout(), true)
 
 	// Timer
@@ -83,18 +83,18 @@ func (ui *UI) createSettings() *SettingsWidget {
 		}
 
 		chosen := s[len(s)-1]
-		settings.timer = parseTimeFromString(chosen)
+		newTime := parseTimeFromString(chosen)
 
 		ui.app.Preferences().SetString("timer", chosen)
 
 		if !ui.timer.started {
-			ui.timer.set(settings.timer)
+			ui.timer.set(newTime)
 		}
 
 		sTimer.SetSelected([]string{chosen})
 	})
 	sTimer.Horizontal = true
-	sTimer.SetSelected([]string{formatTime(settings.timer)})
+	sTimer.SetSelected([]string{ui.app.Preferences().StringWithFallback("timer", formatTime(DefaultSettings.timer))})
 	s.add("Timer", container.New(layout.NewHBoxLayout(), sTimer), layout.NewHBoxLayout(), true)
 
 	s.hide()
@@ -103,7 +103,8 @@ func (ui *UI) createSettings() *SettingsWidget {
 }
 
 func (ui *UI) createTimerSegment() *fyne.Container {
-	ui.timer = createTimeWidget(onMainTimerFinish)
+	t := parseTimeFromString(ui.app.Preferences().StringWithFallback("timer", formatTime(DefaultSettings.timer)))
+	ui.timer = createTimeWidget(onMainTimerFinish, t)
 	pauseWidget := createPauseWidget()
 	toggleButtonWidget := widget.NewButton("", func() {
 		if ui.timer.started {
