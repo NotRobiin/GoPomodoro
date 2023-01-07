@@ -12,16 +12,23 @@ const (
 	WindowTitle  = "Pomodoro"
 	WindowWidth  = 300
 	WindowHeight = 200
-
-	// Timer
-	TimerDefaultTime = (5 * time.Second)
 )
 
 var (
+	// Timer
+	TimerOptions = []time.Duration{
+		25 * time.Minute,
+		20 * time.Minute,
+		15 * time.Minute,
+	}
+	TimerDefaultTime = TimerOptions[0]
+
 	// Custom settings
 	DefaultSettings = Settings{
-		soundEnabled:     true,
-		autoStartEnabled: false,
+		soundEnabled:       true,
+		autoStartEnabled:   false,
+		notificationVolume: 1.0,
+		timer:              TimerDefaultTime,
 	}
 
 	// Theme
@@ -48,13 +55,13 @@ var (
 
 	BreakRectSize = fyne.NewSize(3, 3)
 
+	DefaultBreaks = [...]time.Duration{
+		5 * time.Minute,
+		5 * time.Minute,
+		15 * time.Minute,
+	}
+
 	// Notifications
 	NotificationButtonMultiplier = 1.5 // Default size (theme.IconInlineSize()) * value
 	NotificationSound            = "./resources/notification.mp3"
-
-	DefaultBreaks = [...]time.Duration{
-		5 * time.Second,
-		5 * time.Second,
-		15 * time.Second,
-	}
 )
