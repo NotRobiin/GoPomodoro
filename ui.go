@@ -1,10 +1,7 @@
 package main
 
 import (
-	"image/color"
-
 	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/driver/desktop"
 	"fyne.io/fyne/v2/layout"
@@ -55,25 +52,50 @@ func (ui *UI) createContent() *fyne.Container {
 }
 
 func (ui *UI) createSettings() *SettingsWidget {
-	s := &SettingsWidget{}
+	s := &SettingsWidget{title: "Settings"}
+	s.create(ui.window.Canvas(), func() { s.toggle() })
 
 	s.toggleButton = widget.NewButtonWithIcon("", theme.SettingsIcon(), func() { s.toggle() })
 	s.toggleButton.Move(fyne.NewPos(WindowWidth-theme.IconInlineSize(), 0))
 	s.toggleButton.Resize(fyne.NewSize(theme.IconInlineSize(), theme.IconInlineSize()))
 
-	title := container.New(layout.NewCenterLayout(), canvas.NewText("Settings", color.White))
+	// Sound
+	sSound := widget.NewCheck("", func(v bool) { ui.app.Preferences().SetBool("sound", v) })
+	sSound.SetChecked(ui.app.Preferences().BoolWithFallback("sound", DefaultSettings.soundEnabled))
+	s.add("Sound", container.New(layout.NewMaxLayout(), sSound), layout.NewHBoxLayout(), true)
 
-	sSound := widget.NewCheck("Sound", func(v bool) { sound.enabled = v })
-	sSound.SetChecked(sound.enabled)
+	// Auto start
+	sAutoStart := widget.NewCheck("", func(v bool) { ui.app.Preferences().SetBool("auto-start", v) })
+	sAutoStart.SetChecked(ui.app.Preferences().BoolWithFallback("auto-start", DefaultSettings.autoStartEnabled))
+	s.add("Auto-start", container.New(layout.NewMaxLayout(), sAutoStart), layout.NewHBoxLayout(), true)
 
-	sAutoStart := widget.NewCheck("Auto-start", func(v bool) { autoStartEnabled = v })
-	sAutoStart.SetChecked(autoStartEnabled)
+	// Timer
+	var sTimer *widget.CheckGroup
+	var times []string
 
-	s.create(ui.window.Canvas(), func() { s.toggle() },
-		title,
-		sSound,
-		sAutoStart,
-	)
+	for _, v := range TimerOptions {
+		times = append(times, formatTime(v))
+	}
+
+	sTimer = widget.NewCheckGroup(times, func(s []string) {
+		if len(s) <= 1 {
+			return
+		}
+
+		chosen := s[len(s)-1]
+		newTime := parseTimeFromString(chosen)
+
+		ui.app.Preferences().SetString("timer", chosen)
+
+		if !ui.timer.started {
+			ui.timer.set(newTime)
+		}
+
+		sTimer.SetSelected([]string{chosen})
+	})
+	sTimer.Horizontal = true
+	sTimer.SetSelected([]string{ui.app.Preferences().StringWithFallback("timer", formatTime(DefaultSettings.timer))})
+	s.add("Timer", container.New(layout.NewHBoxLayout(), sTimer), layout.NewHBoxLayout(), true)
 
 	s.hide()
 
@@ -81,7 +103,8 @@ func (ui *UI) createSettings() *SettingsWidget {
 }
 
 func (ui *UI) createTimerSegment() *fyne.Container {
-	ui.timer = createTimeWidget(onMainTimerFinish)
+	t := parseTimeFromString(ui.app.Preferences().StringWithFallback("timer", formatTime(DefaultSettings.timer)))
+	ui.timer = createTimeWidget(onMainTimerFinish, t)
 	pauseWidget := createPauseWidget()
 	toggleButtonWidget := widget.NewButton("", func() {
 		if ui.timer.started {

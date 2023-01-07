@@ -13,12 +13,9 @@ import (
 type Sound struct {
 	context *oto.Context
 	cache   map[string]*mp3.Decoder
-	enabled bool
 }
 
 func (s *Sound) init() {
-	s.enabled = true
-
 	// Cache
 	s.cache = make(map[string]*mp3.Decoder)
 
@@ -68,8 +65,4 @@ func (s *Sound) play(what *mp3.Decoder) {
 	}
 
 	player.Close()
-}
-
-func (s *Sound) toggle() {
-	s.enabled = !s.enabled
 }

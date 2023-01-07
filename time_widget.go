@@ -12,14 +12,14 @@ type TimeWidget struct {
 	started bool
 }
 
-func createTimeWidget(onFinish func()) *TimeWidget {
+func createTimeWidget(onFinish func(), startTime time.Duration) *TimeWidget {
 	tw := new(TimeWidget)
 
 	tw.widget = canvas.NewText("", TimerTextColor)
 	tw.widget.Text = TimerStartText
 	tw.widget.TextSize = TimerTextSize
 	tw.timer = createTimer(tw.onTick, onFinish)
-	tw.timer.set(TimerDefaultTime)
+	tw.timer.set(startTime)
 
 	return tw
 }
@@ -48,7 +48,10 @@ func (tw *TimeWidget) toggle() {
 
 func (tw *TimeWidget) set(tm time.Duration) {
 	tw.timer.set(tm)
-	tw.update()
+
+	if tw.started {
+		tw.update()
+	}
 }
 
 func (tw *TimeWidget) update() {

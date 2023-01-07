@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"strconv"
+	"strings"
 	"time"
 
 	"fyne.io/fyne/v2"
@@ -9,12 +11,11 @@ import (
 )
 
 var (
+	settings *Settings
 	ui       *UI
 	isBreak  bool
 	breakNum int
 	sound    *Sound
-
-	autoStartEnabled bool
 )
 
 func formatTime(tm time.Duration) string {
@@ -27,7 +28,7 @@ func formatTime(tm time.Duration) string {
 
 func onMainTimerFinish() {
 	isBreak = !isBreak
-	newTime := TimerDefaultTime
+	newTime := parseTimeFromString(ui.app.Preferences().StringWithFallback("timer", formatTime(DefaultSettings.timer)))
 	s := BackgroundColor
 	e := BackgroundColorBreak
 
@@ -47,7 +48,7 @@ func onMainTimerFinish() {
 	ui.timer.timer.stop()
 	ui.timer.set(newTime)
 
-	if autoStartEnabled {
+	if ui.app.Preferences().BoolWithFallback("auto-start", DefaultSettings.autoStartEnabled) {
 		ui.timer.timer.countDown()
 	} else {
 		ui.timer.started = false
@@ -58,9 +59,17 @@ func onMainTimerFinish() {
 		ui.disableBreaks()
 	}
 
-	if sound.enabled {
+	if ui.app.Preferences().BoolWithFallback("sound", DefaultSettings.soundEnabled) {
 		sound.play(sound.cache["notification"])
 	}
+}
+
+func parseTimeFromString(s string) time.Duration {
+	res := strings.Split(s, ":")
+	min, _ := strconv.Atoi(res[0])
+	sec, _ := strconv.Atoi(res[1])
+
+	return time.Duration(min)*time.Minute + time.Duration(sec)*time.Second
 }
 
 func main() {
@@ -69,7 +78,7 @@ func main() {
 	sound.cache["notification"] = sound.open(NotificationSound)
 
 	ui = new(UI)
-	ui.app = app.New()
+	ui.app = app.NewWithID("gopomodoro.preferences")
 
 	ui.app.Settings().SetTheme(&newTheme{})
 	ui.window = ui.app.NewWindow(WindowTitle)

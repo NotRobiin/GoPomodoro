@@ -1,60 +1,48 @@
 package main
 
 import (
+	"image/color"
+
 	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/layout"
+	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 )
 
-type TapPopUp struct {
-	*widget.PopUp
-
-	onTap, onTapSecondary func()
-	overlayShown          bool
-}
-
-func NewTapPopUp(content fyne.CanvasObject, canvas fyne.Canvas, onTap, onTapSecondary func()) *TapPopUp {
-	return &TapPopUp{PopUp: widget.NewPopUp(content, canvas), onTap: onTap, onTapSecondary: onTapSecondary}
-}
-
-func (p *TapPopUp) Tapped(_ *fyne.PointEvent) {
-	p.onTap()
-	p.PopUp.Tapped(nil)
-}
-
-func (p *TapPopUp) TappedSecondary(_ *fyne.PointEvent) {
-	p.onTapSecondary()
-	p.PopUp.TappedSecondary(nil)
-}
-
-func (p *TapPopUp) Show() {
-	if !p.overlayShown {
-		p.Canvas.Overlays().Add(p)
-		p.overlayShown = true
-	}
-	p.Refresh()
-	p.BaseWidget.Show()
-}
-
-func (p *TapPopUp) Hide() {
-	if p.overlayShown {
-		p.Canvas.Overlays().Remove(p)
-		p.overlayShown = false
-	}
-	p.BaseWidget.Hide()
-}
-
 type SettingsWidget struct {
 	toggleButton *widget.Button
-	overlay      *TapPopUp
+	overlay      *widget.PopUp
 	widget       *fyne.Container
 	enabled      bool
+	title        string
 }
 
-func (sw *SettingsWidget) create(c fyne.Canvas, onDismiss func(), settings ...fyne.CanvasObject) {
-	sw.widget = container.New(layout.NewVBoxLayout(), settings...)
-	sw.overlay = NewTapPopUp(sw.widget, c, onDismiss, onDismiss)
+func (sw *SettingsWidget) create(c fyne.Canvas, onDismiss func()) {
+	b := widget.NewButtonWithIcon("", theme.CancelIcon(), func() { sw.toggle() })
+	b.Move(fyne.NewPos(WindowWidth-theme.IconInlineSize(), 0))
+	b.Resize(fyne.NewSize(theme.IconInlineSize(), theme.IconInlineSize()))
+
+	title := container.New(layout.NewCenterLayout(), canvas.NewText(sw.title, color.White))
+	con := container.New(layout.NewMaxLayout(), title, container.New(layout.NewHBoxLayout(), layout.NewSpacer(), b))
+
+	sw.widget = container.New(layout.NewVBoxLayout(), con, widget.NewSeparator())
+	sw.overlay = widget.NewModalPopUp(sw.widget, c)
+}
+
+func (sw *SettingsWidget) add(title string, content *fyne.Container, layoutType fyne.Layout, spacer bool) {
+	t := canvas.NewText(title, color.White)
+	con := container.New(layoutType)
+	con.Add(t)
+
+	if spacer {
+		con.Add(layout.NewSpacer())
+	}
+
+	con.Add(content)
+
+	sw.widget.Add(con)
 }
 
 func (sw *SettingsWidget) toggle() {
