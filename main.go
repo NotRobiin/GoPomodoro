@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"strconv"
+	"strings"
 	"time"
 
 	"fyne.io/fyne/v2"
@@ -62,6 +64,20 @@ func onMainTimerFinish() {
 	}
 }
 
+func parseTimeFromString(s string) time.Duration {
+	res := strings.Split(s, ":")
+	min, _ := strconv.Atoi(res[0])
+	sec, _ := strconv.Atoi(res[1])
+
+	return time.Duration(min)*time.Minute + time.Duration(sec)*time.Second
+}
+
+func loadPreferences(ui *UI) {
+	settings.timer = parseTimeFromString(ui.app.Preferences().StringWithFallback("timer", formatTime(DefaultSettings.timer)))
+	settings.autoStartEnabled = ui.app.Preferences().BoolWithFallback("auto-start", DefaultSettings.autoStartEnabled)
+	settings.soundEnabled = ui.app.Preferences().BoolWithFallback("sound", DefaultSettings.soundEnabled)
+}
+
 func main() {
 	settings = &DefaultSettings
 
@@ -70,7 +86,8 @@ func main() {
 	sound.cache["notification"] = sound.open(NotificationSound)
 
 	ui = new(UI)
-	ui.app = app.New()
+	ui.app = app.NewWithID("gopomodoro.preferences")
+	loadPreferences(ui)
 
 	ui.app.Settings().SetTheme(&newTheme{})
 	ui.window = ui.app.NewWindow(WindowTitle)

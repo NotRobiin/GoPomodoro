@@ -64,12 +64,12 @@ func (ui *UI) createSettings() *SettingsWidget {
 	s.toggleButton.Resize(fyne.NewSize(theme.IconInlineSize(), theme.IconInlineSize()))
 
 	// Sound
-	sSound := widget.NewCheck("", func(v bool) { settings.soundEnabled = v })
+	sSound := widget.NewCheck("", func(v bool) { settings.soundEnabled = v; ui.app.Preferences().SetBool("sound", v) })
 	sSound.SetChecked(settings.soundEnabled)
 	s.add("Sound", container.New(layout.NewMaxLayout(), sSound), layout.NewHBoxLayout(), true)
 
 	// Auto start
-	sAutoStart := widget.NewCheck("", func(v bool) { settings.autoStartEnabled = v })
+	sAutoStart := widget.NewCheck("", func(v bool) { settings.autoStartEnabled = v; ui.app.Preferences().SetBool("auto-start", v) })
 	sAutoStart.SetChecked(settings.autoStartEnabled)
 	s.add("Auto-start", container.New(layout.NewMaxLayout(), sAutoStart), layout.NewHBoxLayout(), true)
 
@@ -93,6 +93,7 @@ func (ui *UI) createSettings() *SettingsWidget {
 		sec, _ := strconv.Atoi(res[1])
 
 		settings.timer = time.Duration(min)*time.Minute + time.Duration(sec)*time.Second
+		ui.app.Preferences().SetString("timer", chosen)
 
 		if !ui.timer.started {
 			ui.timer.set(settings.timer)
