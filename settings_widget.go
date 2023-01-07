@@ -20,7 +20,7 @@ type SettingsWidget struct {
 }
 
 func (sw *SettingsWidget) create(c fyne.Canvas, onDismiss func()) {
-	b := widget.NewButtonWithIcon("", theme.SettingsIcon(), func() { sw.toggle() })
+	b := widget.NewButtonWithIcon("", theme.CancelIcon(), func() { sw.toggle() })
 	b.Move(fyne.NewPos(WindowWidth-theme.IconInlineSize(), 0))
 	b.Resize(fyne.NewSize(theme.IconInlineSize(), theme.IconInlineSize()))
 
@@ -31,9 +31,8 @@ func (sw *SettingsWidget) create(c fyne.Canvas, onDismiss func()) {
 	sw.overlay = widget.NewModalPopUp(sw.widget, c)
 }
 
-func (sw *SettingsWidget) add(title string, obj fyne.CanvasObject, layoutType fyne.Layout, spacer bool) {
+func (sw *SettingsWidget) add(title string, content *fyne.Container, layoutType fyne.Layout, spacer bool) {
 	t := canvas.NewText(title, color.White)
-	c := container.New(layout.NewMaxLayout(), obj)
 	con := container.New(layoutType)
 	con.Add(t)
 
@@ -41,7 +40,7 @@ func (sw *SettingsWidget) add(title string, obj fyne.CanvasObject, layoutType fy
 		con.Add(layout.NewSpacer())
 	}
 
-	con.Add(c)
+	con.Add(content)
 
 	sw.widget.Add(con)
 }
