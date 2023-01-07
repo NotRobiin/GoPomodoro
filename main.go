@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "embed"
 	"fmt"
 	"strconv"
 	"strings"
@@ -9,6 +10,9 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 )
+
+//go:embed notification.mp3
+var notificationBytes []byte
 
 var (
 	settings *Settings
@@ -60,7 +64,7 @@ func onMainTimerFinish() {
 	}
 
 	if ui.app.Preferences().BoolWithFallback("sound", DefaultSettings.soundEnabled) {
-		sound.play(sound.cache["notification"])
+		sound.play(sound.decodeFromBytes(notificationBytes))
 	}
 }
 
@@ -75,7 +79,6 @@ func parseTimeFromString(s string) time.Duration {
 func main() {
 	sound = new(Sound)
 	sound.init()
-	sound.cache["notification"] = sound.open(NotificationSound)
 
 	ui = new(UI)
 	ui.app = app.NewWithID("gopomodoro.preferences")

@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"io"
-	"os"
 	"time"
 
 	"github.com/hajimehoshi/go-mp3"
@@ -34,12 +33,7 @@ func (s *Sound) init() {
 	s.context = c
 }
 
-func (s *Sound) open(path string) *mp3.Decoder {
-	b, err := os.ReadFile(path)
-	if err != nil {
-		panic("reading my-file.mp3 failed: " + err.Error())
-	}
-
+func (s *Sound) decodeFromBytes(b []byte) *mp3.Decoder {
 	reader := bytes.NewReader(b)
 
 	decodedMp3, err := mp3.NewDecoder(reader)
