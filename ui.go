@@ -1,6 +1,10 @@
 package main
 
 import (
+	"strconv"
+	"strings"
+	"time"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/driver/desktop"
@@ -62,21 +66,51 @@ func (ui *UI) createSettings() *SettingsWidget {
 	// Sound
 	sSound := widget.NewCheck("", func(v bool) { settings.soundEnabled = v })
 	sSound.SetChecked(settings.soundEnabled)
-	s.add("Sound", sSound, layout.NewHBoxLayout(), true)
+	s.add("Sound", container.New(layout.NewMaxLayout(), sSound), layout.NewHBoxLayout(), true)
 
 	// Auto start
 	sAutoStart := widget.NewCheck("", func(v bool) { settings.autoStartEnabled = v })
 	sAutoStart.SetChecked(settings.autoStartEnabled)
-	s.add("Auto-start", sAutoStart, layout.NewHBoxLayout(), true)
+	s.add("Auto-start", container.New(layout.NewMaxLayout(), sAutoStart), layout.NewHBoxLayout(), true)
 
 	// Volume
 	sVolume := widget.NewSlider(0, 100)
 	sVolume.OnChanged = func(v float64) { settings.notificationVolume = v }
-	s.add("Volume", sVolume, layout.NewAdaptiveGridLayout(2), false)
+	s.add("Volume", container.New(layout.NewMaxLayout(), sVolume), layout.NewAdaptiveGridLayout(2), false)
+
+	// Timer
+	var sTimer *widget.CheckGroup
+	var times []string
+
+	for _, v := range TimerOptions {
+		times = append(times, formatTime(v))
+	}
+
+	sTimer = widget.NewCheckGroup(times, func(s []string) {
+		if len(s) > 1 {
+			chosen := s[len(s)-1]
+			settings.timer = customParse(chosen)
+			sTimer.SetSelected([]string{chosen})
+		}
+	})
+	sTimer.Horizontal = true
+	sTimer.SetSelected([]string{formatTime(settings.timer)})
+
+	s.add("Timer", container.New(layout.NewHBoxLayout(), sTimer), layout.NewHBoxLayout(), true)
 
 	s.hide()
 
 	return s
+}
+
+func customParse(s string) time.Duration {
+	res := strings.Split(s, ":")
+	min, _ := strconv.Atoi(res[0])
+	sec, _ := strconv.Atoi(res[1])
+	rm := time.Duration(min) * time.Minute
+	rs := time.Duration(sec) * time.Second
+
+	return rm + rs
 }
 
 func (ui *UI) createTimerSegment() *fyne.Container {
