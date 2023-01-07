@@ -48,7 +48,10 @@ func (tw *TimeWidget) toggle() {
 
 func (tw *TimeWidget) set(tm time.Duration) {
 	tw.timer.set(tm)
-	tw.update()
+
+	if tw.started {
+		tw.update()
+	}
 }
 
 func (tw *TimeWidget) update() {
