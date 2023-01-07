@@ -89,7 +89,12 @@ func (ui *UI) createSettings() *SettingsWidget {
 	sTimer = widget.NewCheckGroup(times, func(s []string) {
 		if len(s) > 1 {
 			chosen := s[len(s)-1]
-			settings.timer = customParse(chosen)
+
+			res := strings.Split(chosen, ":")
+			min, _ := strconv.Atoi(res[0])
+			sec, _ := strconv.Atoi(res[1])
+
+			settings.timer = time.Duration(min)*time.Minute + time.Duration(sec)*time.Second
 			sTimer.SetSelected([]string{chosen})
 		}
 	})
@@ -101,16 +106,6 @@ func (ui *UI) createSettings() *SettingsWidget {
 	s.hide()
 
 	return s
-}
-
-func customParse(s string) time.Duration {
-	res := strings.Split(s, ":")
-	min, _ := strconv.Atoi(res[0])
-	sec, _ := strconv.Atoi(res[1])
-	rm := time.Duration(min) * time.Minute
-	rs := time.Duration(sec) * time.Second
-
-	return rm + rs
 }
 
 func (ui *UI) createTimerSegment() *fyne.Container {
