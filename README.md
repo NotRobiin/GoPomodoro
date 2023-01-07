@@ -34,3 +34,4 @@ Settings
 ### Todo
 - Add an option to change background color for both work and break times.
 - Add an option to change short and long breaks frequency.
+- Add an option to reset/skip the timer
