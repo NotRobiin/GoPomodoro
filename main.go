@@ -26,7 +26,7 @@ func formatTime(tm time.Duration) string {
 
 func onMainTimerFinish() {
 	isBreak = !isBreak
-	newTime := TimerDefaultTime
+	newTime := settings.timer
 	s := BackgroundColor
 	e := BackgroundColorBreak
 
