@@ -15,7 +15,6 @@ import (
 var notificationBytes []byte
 
 var (
-	settings *Settings
 	ui       *UI
 	isBreak  bool
 	breakNum int
@@ -94,6 +93,6 @@ func main() {
 	ui.window.CenterOnScreen()
 	ui.window.RequestFocus()
 	ui.window.SetFixedSize(true)
-	ui.window.SetCloseIntercept(func() { ui.window.Hide() })
+	// ui.window.SetCloseIntercept(func() { ui.window.Hide() })
 	ui.window.ShowAndRun()
 }
