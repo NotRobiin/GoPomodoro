@@ -1,10 +1,6 @@
 package main
 
 import (
-	"strconv"
-	"strings"
-	"time"
-
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/driver/desktop"
@@ -87,12 +83,8 @@ func (ui *UI) createSettings() *SettingsWidget {
 		}
 
 		chosen := s[len(s)-1]
+		settings.timer = parseTimeFromString(chosen)
 
-		res := strings.Split(chosen, ":")
-		min, _ := strconv.Atoi(res[0])
-		sec, _ := strconv.Atoi(res[1])
-
-		settings.timer = time.Duration(min)*time.Minute + time.Duration(sec)*time.Second
 		ui.app.Preferences().SetString("timer", chosen)
 
 		if !ui.timer.started {
