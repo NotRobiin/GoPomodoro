@@ -59,8 +59,4 @@ var (
 		5 * time.Minute,
 		15 * time.Minute,
 	}
-
-	// Notifications
-	NotificationButtonMultiplier = 1.5 // Default size (theme.IconInlineSize()) * value
-	NotificationSound            = "./resources/notification.mp3"
 )
