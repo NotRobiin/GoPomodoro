@@ -82,7 +82,7 @@ func (ui *UI) createSettings() *SettingsWidget {
 	}
 
 	sTimer = widget.NewCheckGroup(times, func(s []string) {
-		if len(s) > 1 {
+		if len(s) <= 1 {
 			return
 		}
 
