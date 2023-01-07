@@ -19,7 +19,7 @@ func createTimeWidget(onFinish func()) *TimeWidget {
 	tw.widget.Text = TimerStartText
 	tw.widget.TextSize = TimerTextSize
 	tw.timer = createTimer(tw.onTick, onFinish)
-	tw.timer.set(TimerDefaultTime)
+	tw.timer.set(settings.timer)
 
 	return tw
 }
