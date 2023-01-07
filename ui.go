@@ -1,10 +1,7 @@
 package main
 
 import (
-	"image/color"
-
 	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/driver/desktop"
 	"fyne.io/fyne/v2/layout"
@@ -55,25 +52,27 @@ func (ui *UI) createContent() *fyne.Container {
 }
 
 func (ui *UI) createSettings() *SettingsWidget {
-	s := &SettingsWidget{}
+	s := &SettingsWidget{title: "Settings"}
+	s.create(ui.window.Canvas(), func() { s.toggle() })
 
 	s.toggleButton = widget.NewButtonWithIcon("", theme.SettingsIcon(), func() { s.toggle() })
 	s.toggleButton.Move(fyne.NewPos(WindowWidth-theme.IconInlineSize(), 0))
 	s.toggleButton.Resize(fyne.NewSize(theme.IconInlineSize(), theme.IconInlineSize()))
 
-	title := container.New(layout.NewCenterLayout(), canvas.NewText("Settings", color.White))
-
-	sSound := widget.NewCheck("Sound", func(v bool) { settings.soundEnabled = v })
+	// Sound
+	sSound := widget.NewCheck("", func(v bool) { settings.soundEnabled = v })
 	sSound.SetChecked(settings.soundEnabled)
+	s.add("Sound", sSound, layout.NewHBoxLayout(), true)
 
-	sAutoStart := widget.NewCheck("Auto-start", func(v bool) { settings.autoStartEnabled = v })
+	// Auto start
+	sAutoStart := widget.NewCheck("", func(v bool) { settings.autoStartEnabled = v })
 	sAutoStart.SetChecked(settings.autoStartEnabled)
+	s.add("Auto-start", sAutoStart, layout.NewHBoxLayout(), true)
 
-	s.create(ui.window.Canvas(), func() { s.toggle() },
-		title,
-		sSound,
-		sAutoStart,
-	)
+	// Volume
+	sVolume := widget.NewSlider(0, 100)
+	sVolume.OnChanged = func(v float64) { settings.notificationVolume = v }
+	s.add("Volume", sVolume, layout.NewAdaptiveGridLayout(2), false)
 
 	s.hide()
 
