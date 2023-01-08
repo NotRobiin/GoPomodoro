@@ -31,7 +31,7 @@ func formatTime(tm time.Duration) string {
 
 func onMainTimerFinish() {
 	isBreak = !isBreak
-	newTime := parseTimeFromString(ui.app.Preferences().StringWithFallback("timer", formatTime(DefaultSettings.timer)))
+	newTime := parseTimeFromString(ui.p.StringWithFallback("timer", formatTime(DefaultSettings.timer)))
 	s := BackgroundColor
 	e := BackgroundColorBreak
 
@@ -45,13 +45,16 @@ func onMainTimerFinish() {
 		e = BackgroundColor
 	}
 
-	ui.bg.animate(s, e, BackgroundAnimationTime)
-
 	// Update main timer.
 	ui.timer.timer.stop()
 	ui.timer.set(newTime)
+	ui.timer.update()
 
-	if ui.app.Preferences().BoolWithFallback("auto-start", DefaultSettings.autoStartEnabled) {
+	ui.bg.animate(s, e, BackgroundAnimationTime)
+
+	if ui.p.BoolWithFallback("auto-start", DefaultSettings.autoStartEnabled) {
+		ui.timer.started = true
+		ui.timer.update()
 		ui.timer.timer.countDown()
 	} else {
 		ui.timer.started = false
@@ -62,7 +65,7 @@ func onMainTimerFinish() {
 		ui.disableBreaks()
 	}
 
-	if ui.app.Preferences().BoolWithFallback("sound", DefaultSettings.soundEnabled) {
+	if ui.p.BoolWithFallback("sound", DefaultSettings.soundEnabled) {
 		sound.play(sound.decodeFromBytes(notificationBytes))
 	}
 }
@@ -81,6 +84,7 @@ func main() {
 
 	ui = new(UI)
 	ui.app = app.NewWithID("gopomodoro.preferences")
+	ui.p = ui.app.Preferences()
 
 	ui.app.Settings().SetTheme(&newTheme{})
 	ui.window = ui.app.NewWindow(WindowTitle)

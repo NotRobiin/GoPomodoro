@@ -22,7 +22,7 @@ type SettingsWidget struct {
 func (sw *SettingsWidget) create(c fyne.Canvas, onDismiss func()) {
 	b := widget.NewButtonWithIcon("", theme.CancelIcon(), func() { sw.toggle() })
 	b.Move(fyne.NewPos(WindowWidth-theme.IconInlineSize(), 0))
-	b.Resize(fyne.NewSize(theme.IconInlineSize(), theme.IconInlineSize()))
+	// b.Resize(fyne.NewSize(theme.IconInlineSize(), theme.IconInlineSize()))
 
 	title := container.New(layout.NewCenterLayout(), canvas.NewText(sw.title, color.White))
 	con := container.New(layout.NewMaxLayout(), title, container.New(layout.NewHBoxLayout(), layout.NewSpacer(), b))
