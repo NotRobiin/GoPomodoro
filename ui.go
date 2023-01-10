@@ -14,7 +14,6 @@ type UI struct {
 	window   fyne.Window
 	tray     desktop.App
 	settings *SettingsWidget
-	p        fyne.Preferences
 
 	bg     *Background
 	timer  *TimeWidget
