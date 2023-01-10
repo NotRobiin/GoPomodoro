@@ -43,7 +43,7 @@ func (ui *UI) createContent() *fyne.Container {
 	bStop := widget.NewButtonWithIcon("", theme.MediaStopIcon(), func() {
 		isBreak = false
 		breakNum = 0
-		t := parseTimeFromString(ui.p.StringWithFallback("timer", formatTime(TimerDefaultTime)))
+		t := parseTimeFromString(pref.StringWithFallback("timer", formatTime(TimerDefaultTime)))
 
 		ui.timer.restart(t)
 		ui.disableBreaks()
@@ -77,13 +77,13 @@ func (ui *UI) createSettings() *SettingsWidget {
 	s.toggleButton.Resize(fyne.NewSize(theme.IconInlineSize(), theme.IconInlineSize()))
 
 	// Sound
-	sSound := widget.NewCheck("", func(v bool) { ui.p.SetBool("sound", v) })
-	sSound.SetChecked(ui.p.BoolWithFallback("sound", DefaultSettings.soundEnabled))
+	sSound := widget.NewCheck("", func(v bool) { pref.SetBool("sound", v) })
+	sSound.SetChecked(pref.BoolWithFallback("sound", DefaultSettings.soundEnabled))
 	s.add("Sound", container.New(layout.NewMaxLayout(), sSound), layout.NewHBoxLayout(), true)
 
 	// Auto start
-	sAutoStart := widget.NewCheck("", func(v bool) { ui.p.SetBool("auto-start", v) })
-	sAutoStart.SetChecked(ui.p.BoolWithFallback("auto-start", DefaultSettings.autoStartEnabled))
+	sAutoStart := widget.NewCheck("", func(v bool) { pref.SetBool("auto-start", v) })
+	sAutoStart.SetChecked(pref.BoolWithFallback("auto-start", DefaultSettings.autoStartEnabled))
 	s.add("Auto-start", container.New(layout.NewMaxLayout(), sAutoStart), layout.NewHBoxLayout(), true)
 
 	// Timer
@@ -102,7 +102,7 @@ func (ui *UI) createSettings() *SettingsWidget {
 		chosen := s[len(s)-1]
 		newTime := parseTimeFromString(chosen)
 
-		ui.p.SetString("timer", chosen)
+		pref.SetString("timer", chosen)
 
 		if !ui.timer.started {
 			ui.timer.set(newTime)
@@ -111,7 +111,7 @@ func (ui *UI) createSettings() *SettingsWidget {
 		sTimer.SetSelected([]string{chosen})
 	})
 	sTimer.Horizontal = true
-	sTimer.SetSelected([]string{ui.p.StringWithFallback("timer", formatTime(DefaultSettings.timer))})
+	sTimer.SetSelected([]string{pref.StringWithFallback("timer", formatTime(DefaultSettings.timer))})
 	s.add("Timer", container.New(layout.NewHBoxLayout(), sTimer), layout.NewHBoxLayout(), true)
 
 	s.hide()
@@ -120,7 +120,7 @@ func (ui *UI) createSettings() *SettingsWidget {
 }
 
 func (ui *UI) createTimerSegment() *fyne.Container {
-	t := parseTimeFromString(ui.p.StringWithFallback("timer", formatTime(DefaultSettings.timer)))
+	t := parseTimeFromString(pref.StringWithFallback("timer", formatTime(DefaultSettings.timer)))
 	ui.timer = createTimeWidget(onMainTimerFinish, t)
 	pauseWidget := createPauseWidget()
 	toggleButtonWidget := widget.NewButton("", func() {

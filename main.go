@@ -19,6 +19,7 @@ var (
 	isBreak  bool
 	breakNum int
 	sound    *Sound
+	pref     fyne.Preferences
 )
 
 func formatTime(tm time.Duration) string {
@@ -31,7 +32,7 @@ func formatTime(tm time.Duration) string {
 
 func onMainTimerFinish() {
 	isBreak = !isBreak
-	newTime := parseTimeFromString(ui.p.StringWithFallback("timer", formatTime(DefaultSettings.timer)))
+	newTime := parseTimeFromString(pref.StringWithFallback("timer", formatTime(DefaultSettings.timer)))
 	s := BackgroundColor
 	e := BackgroundColorBreak
 
@@ -52,7 +53,7 @@ func onMainTimerFinish() {
 
 	ui.bg.animate(s, e, BackgroundAnimationTime)
 
-	if ui.p.BoolWithFallback("auto-start", DefaultSettings.autoStartEnabled) {
+	if pref.BoolWithFallback("auto-start", DefaultSettings.autoStartEnabled) {
 		ui.timer.started = true
 		ui.timer.update()
 		ui.timer.timer.countDown()
@@ -65,7 +66,7 @@ func onMainTimerFinish() {
 		ui.disableBreaks()
 	}
 
-	if ui.p.BoolWithFallback("sound", DefaultSettings.soundEnabled) {
+	if pref.BoolWithFallback("sound", DefaultSettings.soundEnabled) {
 		sound.play(sound.decodeFromBytes(notificationBytes))
 	}
 }
@@ -84,7 +85,7 @@ func main() {
 
 	ui = new(UI)
 	ui.app = app.NewWithID("gopomodoro.preferences")
-	ui.p = ui.app.Preferences()
+	pref = ui.app.Preferences()
 
 	ui.app.Settings().SetTheme(&newTheme{})
 	ui.window = ui.app.NewWindow(WindowTitle)
@@ -97,6 +98,5 @@ func main() {
 	ui.window.CenterOnScreen()
 	ui.window.RequestFocus()
 	ui.window.SetFixedSize(true)
-	// ui.window.SetCloseIntercept(func() { ui.window.Hide() })
 	ui.window.ShowAndRun()
 }
