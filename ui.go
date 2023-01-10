@@ -17,6 +17,7 @@ type UI struct {
 
 	bg     *Background
 	timer  *TimeWidget
+	pause  *PauseWidget
 	breaks []*BreakWidget
 }
 
@@ -49,6 +50,15 @@ func (ui *UI) createContent() *fyne.Container {
 		ui.bg.animate(ui.bg.widget.FillColor, BackgroundColor, BackgroundAnimationTime)
 	})
 	bSkip := widget.NewButtonWithIcon("", theme.MediaSkipNextIcon(), func() {
+		if ui.pause.enabled {
+			if ui.timer.started {
+				ui.timer.toggle()
+				ui.pause.toggle()
+			} else {
+				ui.timer.start()
+			}
+		}
+
 		ui.timer.skip()
 	})
 
@@ -121,11 +131,11 @@ func (ui *UI) createSettings() *SettingsWidget {
 func (ui *UI) createTimerSegment() *fyne.Container {
 	t := parseTimeFromString(pref.StringWithFallback("timer", formatTime(DefaultSettings.timer)))
 	ui.timer = createTimeWidget(onMainTimerFinish, t)
-	pauseWidget := createPauseWidget()
+	ui.pause = createPauseWidget()
 	toggleButtonWidget := widget.NewButton("", func() {
 		if ui.timer.started {
 			ui.timer.toggle()
-			pauseWidget.toggle()
+			ui.pause.toggle()
 		} else {
 			ui.timer.start()
 		}
@@ -139,7 +149,7 @@ func (ui *UI) createTimerSegment() *fyne.Container {
 			),
 		),
 		container.New(layout.NewCenterLayout(),
-			pauseWidget.widget,
+			ui.pause.widget,
 		),
 	)
 }
