@@ -26,6 +26,14 @@ func createTimeWidget(onFinish func(), startTime time.Duration) *TimeWidget {
 	return tw
 }
 
+func (tw *TimeWidget) enable() {
+	if !tw.timer.paused {
+		return
+	}
+
+	tw.toggle()
+}
+
 func (tw *TimeWidget) start() {
 	tw.started = true
 	tw.update()

@@ -22,6 +22,13 @@ func createPauseWidget() *PauseWidget {
 	return pw
 }
 
+func (pw *PauseWidget) disable() {
+	pw.enabled = false
+	pw.timer.pause()
+	pw.timer.stop()
+	pw.update()
+}
+
 func (pw *PauseWidget) toggle() {
 	pw.enabled = !pw.enabled
 

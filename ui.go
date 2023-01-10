@@ -47,21 +47,16 @@ func (ui *UI) createContent() *fyne.Container {
 
 		ui.timer.restart(t)
 		ui.disableBreaks()
-
-		if ui.pause.enabled {
-			ui.pause.toggle()
-		}
-
+		ui.pause.disable()
 		ui.bg.animate(ui.bg.widget.FillColor, BackgroundColor, BackgroundAnimationTime)
 	})
 	bSkip := widget.NewButtonWithIcon("", theme.MediaSkipNextIcon(), func() {
-		if ui.pause.enabled {
-			if ui.timer.started {
-				ui.timer.toggle()
-				ui.pause.toggle()
-			} else {
-				ui.timer.start()
-			}
+		ui.pause.disable()
+
+		if !ui.timer.started {
+			ui.timer.start()
+		} else {
+			ui.timer.enable()
 		}
 
 		ui.timer.skip()
