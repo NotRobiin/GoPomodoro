@@ -103,7 +103,7 @@ func (ui *UI) createSettings() *SettingsWidget {
 
 		pref.SetString("timer", chosen)
 
-		if !ui.timer.started {
+		if !ui.timer.started && !isBreak {
 			ui.timer.set(newTime)
 		}
 
