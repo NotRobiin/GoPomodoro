@@ -38,6 +38,12 @@ func (tw *TimeWidget) restart(startTime time.Duration) {
 	tw.timer.set(startTime)
 	tw.widget.Text = TimerStartText
 	tw.started = false
+
+	if tw.timer.paused {
+		tw.widget.Color = TimerTextColorPaused
+	} else {
+		tw.widget.Color = TimerTextColor
+	}
 }
 
 func (tw *TimeWidget) skip() {
