@@ -1,4 +1,4 @@
-module main
+module github.com/Wwicked/GoPomodoro
 
 go 1.19
 
